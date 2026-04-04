@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  bgzero:
+    build: .
+    ports:
+      - "8420:8420"
+    volumes:
+      # Mount models directory to persist across rebuilds
+      - ./models:/app/models
+    environment:
+      - LOG_LEVEL=INFO
+      - DEFAULT_MODE=quality
+      - PRELOAD_MODE=quality
+      - MAX_IMAGE_SIZE=8192
+      - MAX_FILE_SIZE=52428800
+      - MAX_BATCH_SIZE=50
+    # For NVIDIA GPU support, uncomment:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    restart: unless-stopped
