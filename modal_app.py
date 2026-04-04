@@ -5,9 +5,9 @@ import modal
 image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install(
-        "torch",
-        "torchvision",
-        "transformers",
+        "torch==2.6.0",
+        "torchvision==0.21.0",
+        "transformers==4.48.0",
         "pillow",
         "numpy",
         "opencv-python-headless",
@@ -31,6 +31,7 @@ MODEL_DIR = "/models/birefnet"
     gpu="T4",
     scaledown_window=120,
     volumes={"/models": volume},
+    secrets=[modal.Secret.from_name("huggingface")],
 )
 @modal.asgi_app()
 def serve():
@@ -46,19 +47,22 @@ def serve():
     from starlette.responses import Response as SResponse
     from pathlib import Path
 
-    model_path = Path(MODEL_DIR)
-    if not model_path.exists() or not any(model_path.iterdir()):
+    import os
+    hf_token = os.environ.get("HF_TOKEN")
+    rmbg_path = Path("/models/rmbg2")
+    need_download = (not rmbg_path.exists()) or (rmbg_path.exists() and len(list(rmbg_path.glob("*"))) < 3)
+    if need_download:
         from huggingface_hub import snapshot_download
-        snapshot_download(
-            "ZhengPeng7/BiRefNet",
-            local_dir=str(model_path),
-            ignore_patterns=["*.md", "*.txt", ".gitattributes"],
-        )
+        print(f"Downloading RMBG 2.0... token={'set' if hf_token else 'MISSING'}")
+        snapshot_download("yuvraj108c/RMBG-2.0", local_dir=str(rmbg_path), ignore_patterns=["*.md","*.txt",".gitattributes"], token=hf_token)
         volume.commit()
+        print("RMBG 2.0 saved to volume")
+    model_path = rmbg_path
+    print(f"Using model from {model_path}")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = AutoModelForImageSegmentation.from_pretrained(
-        str(model_path), trust_remote_code=True
+        str(model_path), trust_remote_code=True, low_cpu_mem_usage=False
     )
     model.to(device).float().eval()
 
@@ -143,7 +147,7 @@ def serve():
         return {
             "status": "ok",
             "device": str(device),
-            "models_loaded": ["birefnet"],
+            "models_loaded": ["rmbg2" if "rmbg2" in str(model_path) else "birefnet"],
             "modes": ["fast", "quality", "ultra", "matting"],
             "limits": {"max_image_size": 8192, "max_file_size_mb": 50, "max_batch_size": 50},
         }
