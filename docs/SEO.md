@@ -57,8 +57,9 @@ custom domain did not resolve in DNS and was not assigned to the Vercel project.
 Canonical URLs, structured-data URLs, and the sitemap use
 `https://rmvbackground.vercel.app` until the custom domain is live. The previous
 `bgzero-rho.vercel.app` hostname redirects permanently to the same path on the
-new Vercel address. The repository and API
-retain their existing technical addresses.
+new Vercel address. This redirect is configured on the Vercel project domain
+with status 308 and persists across deployments. The repository and API retain
+their existing technical addresses.
 
 1. Connect the owned domain to the existing Vercel project and configure the exact DNS records Vercel returns. Check HTTPS and all content routes.
 2. Set the production environment variable `SITE_URL=https://rmvbackground.com` and rebuild. The page generator updates canonical URLs, social URLs, structured-data URLs, robots.txt, and sitemap.xml together.

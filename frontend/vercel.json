@@ -27,18 +27,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "bgzero-rho.vercel.app"
-        }
-      ],
-      "destination": "https://rmvbackground.vercel.app/:path*",
-      "permanent": true
-    }
   ]
 }
