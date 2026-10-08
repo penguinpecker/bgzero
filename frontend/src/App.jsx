@@ -6,8 +6,8 @@ import { policies } from "./content/policies";
 
 export const faqs = [
   [
-    "Is BGZERO free to use?",
-    "The public studio currently has no payment flow, account requirement, or export watermark. Processing is subject to service availability and workspace limits. Model licensing is separate; see the terms before relying on it for commercial work.",
+    "Is rmvbackground free to use?",
+    "Yes. rmvbackground is a free background remover with no account requirement or export watermark. Processing is subject to service availability and workspace limits. Model licensing is separate; see the terms before relying on it for commercial work.",
   ],
   [
     "Which images can I upload?",
@@ -27,12 +27,12 @@ export const faqs = [
   ],
   [
     "Will my workspace be saved?",
-    "Your workspace stays in the current browser tab. Download finished images before refreshing or closing it. BGZERO does not currently provide accounts or a saved image library.",
+    "Your workspace stays in the current browser tab. Download finished images before refreshing or closing it. rmvbackground does not currently provide accounts or a saved image library.",
   ],
 ];
 function Brand() {
   return (
-    <a href="/" className="brand" aria-label="BGZERO home">
+    <a href="/" className="brand" aria-label="rmvbackground home">
       <span className="brand-icon">
         <i />
         <i />
@@ -40,7 +40,7 @@ function Brand() {
         <i />
       </span>
       <span>
-        bg<span className="brand-light">zero</span>
+        rmv<span className="brand-light">background</span>
         <span className="brand-period">.</span>
       </span>
     </a>
@@ -53,7 +53,7 @@ function Header({ path }) {
         <Brand />
         <nav aria-label="Main navigation">
           <a href="/" aria-current={path === "/" ? "page" : undefined}>
-            Background remover
+            Free background remover
           </a>
           <a href="/#how-it-works">How it works</a>
           <a
@@ -79,7 +79,7 @@ function Header({ path }) {
             </>
           ) : (
             <>
-              Open the studio <Icon name="arrow" size={16} />
+              Open free studio <Icon name="arrow" size={16} />
             </>
           )}
         </a>
@@ -102,9 +102,9 @@ function Footer() {
         <div className="footer-links">
           <div>
             <strong>Create</strong>
-            <a href="/#studio">Background remover</a>
+            <a href="/#studio">Free background remover</a>
             <a href="/blog">Guides & articles</a>
-            <a href="/about">About BGZERO</a>
+            <a href="/about">About rmvbackground</a>
           </div>
           <div>
             <strong>The details</strong>
@@ -122,7 +122,7 @@ function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2026 BGZERO</span>
+        <span>© 2026 rmvbackground</span>
         <span>Made for the part worth keeping.</span>
         <a href="#top">Back to top ↑</a>
       </div>
@@ -135,19 +135,18 @@ function Home() {
       <section className="hero-intro">
         <div>
           <span className="eyebrow">
-            <span className="status-dot" /> Free online background remover
+            <span className="status-dot" /> Free online image studio
           </span>
           <h1>
-            Your subject.
-            <br />
-            <span>Zero distractions.</span>
+            Free background <br />
+            <span>remover.</span>
           </h1>
         </div>
         <div className="hero-description">
           <p>
-            Turn any photo into a clean cutout. <br />
-            Remove the background, make it your own,
-            <br className="desktop-break" /> and get back to creating.
+            Remove image backgrounds for free. <br />
+            Make a transparent PNG, choose a new color,
+            <br className="desktop-break" /> and download at full resolution.
           </p>
           <div>
             <span>
@@ -321,7 +320,7 @@ function Home() {
           <em>Lose the background.</em>
         </h2>
         <a href="#studio" className="button">
-          Let’s make a cutout <Icon name="arrow" size={18} />
+          Remove a background for free <Icon name="arrow" size={18} />
         </a>
         <span>No sign-up. Just your image.</span>
       </section>
@@ -371,15 +370,15 @@ function About() {
   return (
     <div className="about-page">
       <section className="page-intro">
-        <span className="eyebrow">About BGZERO</span>
+        <span className="eyebrow">About rmvbackground</span>
         <h1>
           Make room
           <br />
           <span>for the good stuff.</span>
         </h1>
         <p>
-          BGZERO is a focused tool for removing image backgrounds and preparing
-          the result for whatever comes next.
+          rmvbackground is a free tool for removing image backgrounds and
+          preparing the result for whatever comes next.
         </p>
       </section>
       <div className="about-grid">
@@ -405,9 +404,10 @@ function About() {
           <h2>About the journal</h2>
           <p>
             Our ten guides explain the workflows supported by the tool. Articles
-            are published under the BGZERO byline, include official references
-            where relevant, and describe limitations alongside practical steps.
-            They do not imply endorsement by the platforms mentioned.
+            are published under the rmvbackground byline, include official
+            references where relevant, and describe limitations alongside
+            practical steps. They do not imply endorsement by the platforms
+            mentioned.
           </p>
           <h2>Built in the open</h2>
           <p>
@@ -438,7 +438,7 @@ function NotFound() {
       <p>Let’s get you back to something useful.</p>
       <div>
         <a href="/" className="button">
-          Open the studio <Icon name="arrow" size={17} />
+          Open free studio <Icon name="arrow" size={17} />
         </a>
         <a href="/blog" className="button secondary">
           Browse the guides

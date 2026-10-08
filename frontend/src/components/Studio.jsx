@@ -344,7 +344,7 @@ export default function Studio() {
           files[outputName(item.file.name, item.settings.format, index)] =
             new Uint8Array(await blob.arrayBuffer());
         }
-        saveBlob(await zipFiles(files), "bgzero-images.zip");
+        saveBlob(await zipFiles(files), "rmvbackground-images.zip");
       } else if (active?.resultUrl) {
         const { blob } = await exportImage(active);
         saveBlob(blob, outputName(active.file.name, active.settings.format));
@@ -588,7 +588,7 @@ export default function Studio() {
               className="button upload-button"
               onClick={() => input.current?.click()}
             >
-              <Icon name="upload" /> Upload images{" "}
+              <Icon name="upload" /> Upload images — FREE{" "}
               <Icon name="arrow" size={18} />
             </button>
             <span className="upload-hint">

@@ -35,38 +35,38 @@ try {
   const pages = [
     {
       route: "/",
-      title: "Free Background Remover & Image Studio | BGZERO",
+      title: "Free Background Remover Online | rmvbackground",
       description:
-        "Remove image backgrounds with BGZERO. Create transparent PNGs, change colors, resize your canvas, and download batches. No sign-up or watermarks.",
+        "Remove backgrounds for free with rmvbackground. Download transparent PNGs, change background colors, and export batches. No sign-up or watermarks.",
     },
     {
       route: "/blog",
-      title: "Background Removal Guides & Image Editing Tips | BGZERO",
+      title: "Free Background Removal Guides | rmvbackground",
       description:
-        "Ten practical guides to transparent PNGs, product photos, background colors, batch editing, hair edges, profile pictures, and image SEO.",
+        "Learn free background removal with practical guides to transparent PNGs, product photos, batch editing, background colors, and image SEO.",
     },
     {
       route: "/about",
-      title: "About BGZERO | A Simpler Image Workflow",
+      title: "About rmvbackground | Free Background Remover",
       description:
-        "Learn about BGZERO’s background removal studio, image editing workflow, public source code, and practical image guides.",
+        "Meet rmvbackground, a free background remover with transparent PNG downloads, batch editing, and practical image guides. Learn how the studio works.",
     },
     ...Object.entries(policies).map(([slug, policy]) => ({
       route: `/${slug}`,
-      title: `${policy.title} | BGZERO`,
+      title: `${policy.title} | rmvbackground`,
       description: policy.description,
     })),
     ...articles.map((article) => ({
       route: `/blog/${article.slug}`,
-      title: `${article.title} | BGZERO`,
+      title: `${article.title} | rmvbackground`,
       description: article.description,
       article,
     })),
     {
       route: "/404",
-      title: "Page not found | BGZERO",
+      title: "Page not found | rmvbackground",
       description:
-        "This page could not be found. Return to the background removal studio or browse the BGZERO journal.",
+        "This page could not be found. Return to the background removal studio or browse the rmvbackground journal.",
       noindex: true,
     },
   ];
@@ -74,7 +74,7 @@ try {
     const url = origin + (page.route === "/" ? "/" : page.route);
     const organization = {
       "@type": "Organization",
-      name: "BGZERO",
+      name: "rmvbackground",
       url: `${origin}/`,
       logo: `${origin}/favicon.svg`,
     };
@@ -123,10 +123,11 @@ try {
             {
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "BGZERO",
+              name: "rmvbackground",
               url,
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web browser",
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
               description: page.description,
               featureList: [
                 "Background removal",
@@ -140,7 +141,7 @@ try {
             {
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "BGZERO",
+              name: "rmvbackground",
               url,
               publisher: organization,
             },
@@ -160,7 +161,7 @@ try {
     <meta name="robots" content="${page.noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}" />
     <link rel="canonical" href="${escape(url)}" />
     <meta property="og:type" content="${page.article ? "article" : "website"}" />
-    <meta property="og:site_name" content="BGZERO" />
+    <meta property="og:site_name" content="rmvbackground" />
     <meta property="og:title" content="${escape(page.title)}" />
     <meta property="og:description" content="${escape(page.description)}" />
     <meta property="og:url" content="${escape(url)}" />

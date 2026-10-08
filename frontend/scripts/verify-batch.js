@@ -62,7 +62,7 @@ console.log(
 await page.eval(() => {
   const originalClick = HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click = function () {
-    if (this.download !== "bgzero-images.zip") return originalClick.call(this);
+    if (this.download !== "rmvbackground-images.zip") return originalClick.call(this);
     fetch(this.href)
       .then((response) => response.blob())
       .then(async (blob) => {

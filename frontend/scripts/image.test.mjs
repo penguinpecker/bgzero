@@ -53,12 +53,12 @@ test("canvas fitting preserves aspect ratio and centers landscape and portrait i
   });
 });
 test("exports use the requested format and make duplicate archive names distinct", () => {
-  assert.equal(outputName("product.jpg", "webp"), "product-bgzero.webp");
+  assert.equal(outputName("product.jpg", "webp"), "product-rmvbackground.webp");
   assert.notEqual(
     outputName("product.jpg", "png", 0),
     outputName("product.jpg", "png", 1),
   );
-  assert.equal(outputName("../../photo.png", "jpg", 0), "photo-bgzero-1.jpg");
+  assert.equal(outputName("../../photo.png", "jpg", 0), "photo-rmvbackground-1.jpg");
 });
 
 test("unchanged PNG exports reuse original lossless bytes without a canvas encode", async () => {

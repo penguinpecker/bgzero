@@ -67,7 +67,7 @@ export function JournalPreview() {
     <section className="journal-preview section" id="guides">
       <div className="section-header">
         <div>
-          <span className="eyebrow">The BGZERO journal</span>
+          <span className="eyebrow">The rmvbackground journal</span>
           <h2>
             Good images start
             <br />
@@ -99,7 +99,7 @@ export function Journal() {
   return (
     <>
       <section className="page-intro journal-intro">
-        <span className="eyebrow">The BGZERO journal</span>
+        <span className="eyebrow">The rmvbackground journal</span>
         <h1>
           A better image.
           <br />
@@ -184,7 +184,9 @@ export function ArticlePage({ article }) {
         <h1>{article.title}</h1>
         <p>{article.intro}</p>
         <div className="byline">
-          <span className="author-mark">b.</span>
+          <span className="author-mark" aria-hidden="true">
+            r.
+          </span>
           <span>
             <a href="/about">By {article.author}</a>
             <small>
@@ -209,7 +211,7 @@ export function ArticlePage({ article }) {
             ))}
           </nav>
           <a className="button small" href="/#studio">
-            Try the studio <Icon name="arrow" size={16} />
+            Try the free studio <Icon name="arrow" size={16} />
           </a>
         </aside>
         <article className="article-body">
@@ -242,7 +244,7 @@ export function ArticlePage({ article }) {
               possibilities.
             </p>
             <a className="button" href="/#studio">
-              Remove a background <Icon name="arrow" size={17} />
+              Remove a background for free <Icon name="arrow" size={17} />
             </a>
           </div>
           <section className="article-sources">

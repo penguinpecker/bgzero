@@ -2,21 +2,21 @@ export const policies = {
   terms: {
     title: "Terms of use",
     description:
-      "The terms for using the BGZERO background removal tool, image editor, and educational guides.",
+      "The terms for using the rmvbackground background removal tool, image editor, and educational guides.",
     intro:
-      "These terms explain what you can expect from BGZERO and what we ask of people using the tool.",
+      "These terms explain what you can expect from rmvbackground and what we ask of people using the tool.",
     sections: [
       {
         heading: "Using the service",
         paragraphs: [
-          "BGZERO provides image background removal and basic export tools. You may use the interface without creating an account. Upload only images you have permission to process, and use the service in accordance with applicable law.",
+          "rmvbackground provides image background removal and basic export tools. You may use the interface without creating an account. Upload only images you have permission to process, and use the service in accordance with applicable law.",
           "Do not use the service to infringe someone’s rights, create deceptive or unlawful material, interfere with the service, or bypass its technical limits. You are responsible for obtaining any permissions needed from the people depicted in your images.",
         ],
       },
       {
         heading: "Your images and results",
         paragraphs: [
-          "You retain whatever rights you hold in your uploaded images. You authorize BGZERO and its processing infrastructure to handle those images to perform the edits you request and return the result. This does not give you rights to third-party content that you did not already have.",
+          "You retain whatever rights you hold in your uploaded images. You authorize rmvbackground and its processing infrastructure to handle those images to perform the edits you request and return the result. This does not give you rights to third-party content that you did not already have.",
           "Automatic background removal can miss details or remove parts of a subject. Review each result before using or publishing it. Keep your original images and download finished work before closing or refreshing the page; the workspace is not a permanent storage service.",
         ],
       },
@@ -43,7 +43,7 @@ export const policies = {
       {
         heading: "Guides and external resources",
         paragraphs: [
-          "Our articles provide general workflow guidance. External platforms can change their image requirements, so check the destination’s current documentation before publishing. Links to outside resources do not imply that those organizations endorse BGZERO.",
+          "Our articles provide general workflow guidance. External platforms can change their image requirements, so check the destination’s current documentation before publishing. Links to outside resources do not imply that those organizations endorse rmvbackground.",
           "The service is provided as available, without a promise of perfect selections, uninterrupted access, or fitness for a particular purpose. Nothing in these terms excludes rights or obligations that cannot lawfully be excluded.",
         ],
       },
@@ -54,7 +54,7 @@ export const policies = {
         ],
         links: [
           {
-            title: "Contact the BGZERO project maintainer",
+            title: "Contact the rmvbackground project maintainer",
             url: "https://github.com/penguinpecker/bgzero/issues",
           },
         ],
@@ -64,9 +64,9 @@ export const policies = {
   privacy: {
     title: "Privacy notice",
     description:
-      "How BGZERO handles uploaded images, temporary browser state, hosting requests, and its image-processing service.",
+      "How rmvbackground handles uploaded images, temporary browser state, hosting requests, and its image-processing service.",
     intro:
-      "Background removal requires sending your image to a processing service. This page describes the data flow in the current BGZERO application.",
+      "Background removal requires sending your image to a processing service. This page describes the data flow in the current rmvbackground application.",
     sections: [
       {
         heading: "Where your images go",
@@ -78,7 +78,7 @@ export const policies = {
       {
         heading: "Temporary workspace data",
         paragraphs: [
-          "Your current images, generated previews, and export settings are held in the active page’s memory. BGZERO does not save those images to cookies, local storage, or a user account. Refreshing or closing the page clears the application workspace; downloaded files remain wherever you save them.",
+          "Your current images, generated previews, and export settings are held in the active page’s memory. rmvbackground does not save those images to cookies, local storage, or a user account. Refreshing or closing the page clears the application workspace; downloaded files remain wherever you save them.",
           "Removing an image or clearing the workspace releases the browser resources used by this page. It does not issue a deletion request to infrastructure logs or erase copies you downloaded yourself.",
         ],
       },
@@ -103,7 +103,7 @@ export const policies = {
         heading: "Sensitive images and permissions",
         paragraphs: [
           "Only submit files you are authorized to process. If an image is confidential or contains sensitive personal information, consider whether sending it to the hosted processor is appropriate for your requirements.",
-          "The repository includes self-hosting instructions for people who want to operate their own processing infrastructure. A self-hosted deployment has its own operator, configuration, and data-handling responsibilities; this notice describes the public BGZERO interface.",
+          "The repository includes self-hosting instructions for people who want to operate their own processing infrastructure. A self-hosted deployment has its own operator, configuration, and data-handling responsibilities; this notice describes the public rmvbackground interface.",
         ],
       },
       {
@@ -114,7 +114,7 @@ export const policies = {
         ],
         links: [
           {
-            title: "Contact the BGZERO project maintainer",
+            title: "Contact the rmvbackground project maintainer",
             url: "https://github.com/penguinpecker/bgzero/issues",
           },
         ],
@@ -124,9 +124,9 @@ export const policies = {
   cookies: {
     title: "Cookies & browser storage",
     description:
-      "Learn which cookies and browser storage BGZERO uses, how the temporary image workspace works, and how to manage site data.",
+      "Learn which cookies and browser storage rmvbackground uses, how the temporary image workspace works, and how to manage site data.",
     intro:
-      "The BGZERO application does not set analytics, advertising, or preference cookies. Here is what the current site does use.",
+      "The rmvbackground application does not set analytics, advertising, or preference cookies. Here is what the current site does use.",
     sections: [
       {
         heading: "Application cookies",
@@ -138,7 +138,7 @@ export const policies = {
       {
         heading: "What is stored in the browser",
         paragraphs: [
-          "Uploaded images, cutouts, and editor settings live in page memory while you use the studio. They are not written by BGZERO to local storage, session storage, or IndexedDB. Clearing the workspace or closing the page removes the working session from the application.",
+          "Uploaded images, cutouts, and editor settings live in page memory while you use the studio. They are not written by rmvbackground to local storage, session storage, or IndexedDB. Clearing the workspace or closing the page removes the working session from the application.",
           "Your browser may cache ordinary public files such as scripts, fonts, and sample images. Files you deliberately download are saved by your browser outside the temporary workspace. Clearing the site’s cookies does not delete those downloads.",
         ],
       },
@@ -158,7 +158,7 @@ export const policies = {
         ],
         links: [
           {
-            title: "Contact the BGZERO project maintainer",
+            title: "Contact the rmvbackground project maintainer",
             url: "https://github.com/penguinpecker/bgzero/issues",
           },
         ],

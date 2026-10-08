@@ -28,7 +28,7 @@ const source = {
     url: "https://huggingface.co/briaai/RMBG-2.0",
   },
   repo: {
-    title: "BGZERO: Source code and self-hosting instructions",
+    title: "rmvbackground: Source code and self-hosting instructions",
     url: "https://github.com/penguinpecker/bgzero",
   },
 };
@@ -36,11 +36,11 @@ const source = {
 export const articles = [
   {
     slug: "remove-background-from-image",
-    title: "How to remove a background from an image",
+    title: "How to remove an image background for free",
     description:
-      "A practical guide to removing image backgrounds with BGZERO, checking the edges, and downloading a transparent PNG without a watermark.",
+      "Remove an image background for free with rmvbackground. Follow the upload, edge-check, and transparent PNG download steps without a watermark.",
     category: "The essentials",
-    keyword: "remove background from image",
+    keyword: "remove background from image free",
     image: "plant",
     theme: "sage",
     intro:
@@ -56,7 +56,7 @@ export const articles = [
         ],
       },
       {
-        heading: "Remove the background in BGZERO",
+        heading: "Remove the background in rmvbackground",
         list: [
           "Open the background removal studio and choose Quality for your first attempt.",
           "Upload your image, drag it into the upload area, or paste an image from your clipboard.",
@@ -78,7 +78,7 @@ export const articles = [
       {
         heading: "Choose an export that fits the next step",
         paragraphs: [
-          "PNG is a useful master when you need transparency for future layouts. WebP is another transparent option for web use. JPG needs a solid background; BGZERO fills transparent areas with white when you select JPG without another color.",
+          "PNG is a useful master when you need transparency for future layouts. WebP is another transparent option for web use. JPG needs a solid background; rmvbackground fills transparent areas with white when you select JPG without another color.",
           "Keep your original photo and the transparent master together. Create smaller or colored versions from the master, rather than repeatedly saving a compressed derivative. A clear filename, such as green-planter-front-transparent.png, also makes a growing asset folder easier to navigate.",
         ],
       },
@@ -92,11 +92,11 @@ export const articles = [
   },
   {
     slug: "make-transparent-png",
-    title: "Make a transparent PNG that stays transparent",
+    title: "Make a transparent PNG for free",
     description:
-      "Learn how to make a transparent PNG, verify its alpha channel, avoid white backgrounds, and reuse your cutout in designs and presentations.",
+      "Make a transparent PNG for free, check its alpha channel, avoid unwanted white backgrounds, and reuse your cutout in designs and presentations.",
     category: "The essentials",
-    keyword: "make transparent PNG",
+    keyword: "make transparent PNG free",
     image: "plant",
     theme: "checker",
     intro:
@@ -114,7 +114,7 @@ export const articles = [
       {
         heading: "Create the file in the studio",
         list: [
-          "Upload the original photo in BGZERO and wait for background removal.",
+          "Upload the original photo in rmvbackground and wait for background removal.",
           "Choose Result to inspect the processed image.",
           "Select the checkerboard swatch labeled Transparent.",
           "Choose PNG as the export format and keep Original size if you need a reusable master.",
@@ -148,9 +148,9 @@ export const articles = [
   },
   {
     slug: "white-background-product-photos",
-    title: "Give product photos a clean white background",
+    title: "Add a white background to product photos for free",
     description:
-      "Create consistent white-background product photos, control image scale, preserve product details, and check your exports before publishing.",
+      "Use a free background remover to create white-background product photos. Keep consistent spacing, preserve details, and check exports before publishing.",
     category: "For sellers",
     keyword: "white background product photos",
     image: "sneaker",
@@ -177,7 +177,7 @@ export const articles = [
           "Download JPG for a solid-background delivery file, or PNG when your workflow calls for it.",
         ],
         paragraphs: [
-          "Before you add a shadow, decide whether the destination needs a strictly plain image. BGZERO’s Soft shadow setting is a simple compositing effect, not a reconstruction of the lighting in the original photograph. Keep it restrained and check the channel’s current rules.",
+          "Before you add a shadow, decide whether the destination needs a strictly plain image. rmvbackground’s Soft shadow setting is a simple compositing effect, not a reconstruction of the lighting in the original photograph. Keep it restrained and check the channel’s current rules.",
         ],
       },
       {
@@ -204,17 +204,17 @@ export const articles = [
   },
   {
     slug: "batch-background-removal",
-    title: "Remove backgrounds from a batch of images",
+    title: "Free batch background removal: from upload to ZIP",
     description:
-      "A repeatable batch background removal workflow: organize source images, review individual cutouts, preserve export settings, and download a ZIP.",
+      "Remove backgrounds from multiple images for free. Organize your batch, review each cutout, keep individual export settings, and download one ZIP.",
     category: "Better workflows",
-    keyword: "batch background removal",
+    keyword: "free batch background removal",
     image: "collection",
     theme: "peach",
     intro:
       "Batch editing saves repetitive work, but a batch still contains individual images. The useful workflow is to automate the first pass, review each result, and deliver a tidy folder that the next person can understand.",
     takeaway:
-      "Upload a set, review every cutout, and download the finished images as one ZIP. In BGZERO, each image keeps its own background, canvas, and export format.",
+      "Upload a set, review every cutout, and download the finished images as one ZIP. In rmvbackground, each image keeps its own background, canvas, and export format.",
     sections: [
       {
         heading: "Organize before you upload",
@@ -224,7 +224,7 @@ export const articles = [
         ],
       },
       {
-        heading: "Process the set in BGZERO",
+        heading: "Process the set in rmvbackground",
         list: [
           "Select a processing mode before adding images. It applies to new uploads.",
           "Choose several files in the file picker, or drop them into the empty upload panel.",
@@ -262,7 +262,7 @@ export const articles = [
     slug: "remove-background-hair-fur",
     title: "Better background removal around hair and fur",
     description:
-      "Learn how to inspect hair and fur cutouts, spot halos, choose better source photos, and understand the limits of automatic background removal.",
+      "Get cleaner hair and fur cutouts with a free background remover. Inspect fine edges, spot halos, choose better photos, and understand automatic removal limits.",
     category: "The finer details",
     keyword: "remove background hair fur",
     image: "portrait",
@@ -295,8 +295,8 @@ export const articles = [
       {
         heading: "Know what a mode can and cannot promise",
         paragraphs: [
-          "BGZERO exposes Fast, Quality, Ultra, and Matting to support its processing backends. Their behavior depends on the backend configuration. The hosted implementation currently uses the same refinement path for Quality, Ultra, and Matting; choosing a different label does not guarantee a different result.",
-          "If a fine edge is important and the automatic cutout is not good enough, a photo editor with manual layer masks is the right next step. BGZERO’s studio does not currently include a restore brush or a strand-by-strand masking tool. Keep the original photo so manual work remains possible.",
+          "rmvbackground exposes Fast, Quality, Ultra, and Matting to support its processing backends. Their behavior depends on the backend configuration. The hosted implementation currently uses the same refinement path for Quality, Ultra, and Matting; choosing a different label does not guarantee a different result.",
+          "If a fine edge is important and the automatic cutout is not good enough, a photo editor with manual layer masks is the right next step. rmvbackground’s studio does not currently include a restore brush or a strand-by-strand masking tool. Keep the original photo so manual work remains possible.",
         ],
       },
       {
@@ -318,7 +318,7 @@ export const articles = [
     slug: "png-vs-webp-vs-jpg",
     title: "PNG, WebP, or JPG: which should you download?",
     description:
-      "Compare PNG, WebP, and JPG for background removal. Pick the right format for transparency, reusable masters, websites, and solid-background photos.",
+      "Compare PNG, WebP, and JPG after free background removal. Choose a format for transparent cutouts, reusable masters, websites, and finished photos.",
     category: "The essentials",
     keyword: "PNG vs WebP vs JPG background removal",
     image: "formats",
@@ -332,20 +332,20 @@ export const articles = [
         heading: "PNG: the reusable transparent master",
         paragraphs: [
           "PNG supports transparency and lossless image compression. It is a practical choice for a cutout you will reuse in several layouts. The file can be larger than a compressed photographic alternative, especially when the image contains lots of texture.",
-          "In BGZERO, choose Transparent and PNG to preserve the cutout. Keep Original size if you want the source dimensions. This gives you a useful starting file for later colored versions, presentation layouts, and design handoffs.",
+          "In rmvbackground, choose Transparent and PNG to preserve the cutout. Keep Original size if you want the source dimensions. This gives you a useful starting file for later colored versions, presentation layouts, and design handoffs.",
         ],
       },
       {
         heading: "WebP: a flexible web delivery option",
         paragraphs: [
-          "WebP supports transparency and offers lossy and lossless compression. BGZERO’s browser export exposes a quality setting for WebP. A lower setting may reduce file size but can change fine texture, so compare the exported image before publishing.",
+          "WebP supports transparency and offers lossy and lossless compression. rmvbackground’s browser export exposes a quality setting for WebP. A lower setting may reduce file size but can change fine texture, so compare the exported image before publishing.",
           "Use a realistic test: the same canvas, the same subject scale, and the same intended display size. A format name alone does not tell you which file will be smallest or look best for your image. Keep the PNG master if you expect to make more versions.",
         ],
       },
       {
         heading: "JPG: a photograph with a filled background",
         paragraphs: [
-          "JPG does not preserve transparency. It is useful for photos with a finished solid background, especially when the receiving system expects JPEG. Choose your color before exporting; BGZERO uses white if you leave the background transparent while selecting JPG.",
+          "JPG does not preserve transparency. It is useful for photos with a finished solid background, especially when the receiving system expects JPEG. Choose your color before exporting; rmvbackground uses white if you leave the background transparent while selecting JPG.",
           "Repeatedly editing and saving a lossy file can reduce quality. Create new JPG delivery versions from your original or transparent master instead of using the last compressed download as the next source.",
         ],
       },
@@ -373,17 +373,17 @@ export const articles = [
   },
   {
     slug: "change-image-background-color",
-    title: "Change an image background to any color",
+    title: "Change an image background color for free",
     description:
-      "Replace a photo background with white, a brand color, or a muted tone. Preview contrast, adjust spacing, and export the right version in BGZERO.",
+      "Change a photo background color for free with rmvbackground. Add white, a brand color, or a muted tone, adjust the canvas, and download your finished image.",
     category: "Creative work",
-    keyword: "change image background color",
+    keyword: "change image background color free",
     image: "plant",
     theme: "peach",
     intro:
       "A single cutout can work in many places. Put it on white for a catalog, a muted color for a social card, or your brand color for a presentation. Separating the subject first keeps those choices flexible.",
     takeaway:
-      "Remove the original background once, then use the color swatches or custom color picker. BGZERO composites color changes in the browser without reprocessing the cutout.",
+      "Remove the original background once, then use the color swatches or custom color picker. rmvbackground composites color changes in the browser without reprocessing the cutout.",
     sections: [
       {
         heading: "Remove first, recolor second",
@@ -393,7 +393,7 @@ export const articles = [
         ],
       },
       {
-        heading: "Choose a background in BGZERO",
+        heading: "Choose a background in rmvbackground",
         list: [
           "Select your completed image in the workspace.",
           "Open Result view so you can see your composition changes.",
@@ -416,7 +416,7 @@ export const articles = [
         heading: "Keep a small, reusable color system",
         paragraphs: [
           "For a series of product or creator graphics, choose a limited palette and use each color for a purpose. For example, white can serve the catalog, sage can support educational posts, and a darker neutral can frame a cover image. Repeating those choices makes the collection feel intentional.",
-          "Save both a transparent master and the approved colored versions. BGZERO’s workspace is temporary, so the safest record of a finished design is the file you download. Use descriptive names in your own folders to distinguish the background color, destination, and revision. A little organization now prevents an unnecessary round of editing later.",
+          "Save both a transparent master and the approved colored versions. rmvbackground’s workspace is temporary, so the safest record of a finished design is the file you download. Use descriptive names in your own folders to distinguish the background color, destination, and revision. A little organization now prevents an unnecessary round of editing later.",
         ],
       },
     ],
@@ -429,11 +429,11 @@ export const articles = [
   },
   {
     slug: "profile-picture-background",
-    title: "Make a cleaner profile picture background",
+    title: "Create a profile picture background for free",
     description:
-      "Prepare a profile picture with a simple background, comfortable framing, and clean hair edges. Export a square image without cropping your subject.",
+      "Create a profile picture background for free. Choose a simple color, check hair edges, adjust framing, and export a square image for your profile.",
     category: "Creative work",
-    keyword: "profile picture background remover",
+    keyword: "free profile picture background remover",
     image: "portrait",
     theme: "sage",
     intro:
@@ -451,7 +451,7 @@ export const articles = [
       {
         heading: "Build a simple profile version",
         list: [
-          "Upload the portrait to the BGZERO studio.",
+          "Upload the portrait to the rmvbackground studio.",
           "Inspect hair and shoulders in Compare view.",
           "Select a solid background that separates the outline from the canvas.",
           "Choose Square and adjust Image scale to leave comfortable room around the person.",
@@ -487,7 +487,7 @@ export const articles = [
     slug: "shopify-product-image-workflow",
     title: "A repeatable product image workflow for Shopify",
     description:
-      "Prepare a consistent Shopify image set with clean backgrounds, sensible canvas sizes, accurate product variants, and organized exports.",
+      "Prepare Shopify product photos with a free background remover. Keep backgrounds, canvas sizes, product variants, and export files consistent.",
     category: "For sellers",
     keyword: "Shopify product image background removal",
     image: "sneaker",
@@ -507,14 +507,14 @@ export const articles = [
       {
         heading: "Make the clean masters",
         list: [
-          "Upload the source photographs to BGZERO in a manageable batch.",
+          "Upload the source photographs to rmvbackground in a manageable batch.",
           "Review the outlines and interior spaces of each cutout.",
           "Export a transparent PNG master at the original canvas size.",
           "For your storefront version, choose a consistent background and canvas shape.",
           "Check image scale across the set and download the completed files.",
         ],
         paragraphs: [
-          "BGZERO’s square preset is useful for a quick 1080-pixel asset, but it is not a universal Shopify requirement. If your theme uses large zoomable product images, keep a suitably large original export and size it for that destination.",
+          "rmvbackground’s square preset is useful for a quick 1080-pixel asset, but it is not a universal Shopify requirement. If your theme uses large zoomable product images, keep a suitably large original export and size it for that destination.",
         ],
       },
       {
@@ -528,7 +528,7 @@ export const articles = [
         heading: "Keep the publishing handoff organized",
         paragraphs: [
           "Store source photos, transparent masters, and delivery files in separate folders. Keep a small record of the background color and intended canvas for the collection. This makes it easier to add the next product without reconstructing the earlier decisions.",
-          "Before publishing, check file size, legibility, and the correct association between images and variants. Add useful alternative text that describes the visible item in context. BGZERO prepares the image files; it does not upload them to Shopify or manage the store’s product records. Use the official Shopify media documentation below for supported types and current limits.",
+          "Before publishing, check file size, legibility, and the correct association between images and variants. Add useful alternative text that describes the visible item in context. rmvbackground prepares the image files; it does not upload them to Shopify or manage the store’s product records. Use the official Shopify media documentation below for supported types and current limits.",
         ],
       },
     ],
@@ -543,7 +543,7 @@ export const articles = [
     slug: "image-seo-checklist",
     title: "An image SEO checklist for your finished photos",
     description:
-      "Prepare web images with descriptive filenames, useful alt text, sensible dimensions, and relevant page context after removing their backgrounds.",
+      "After free background removal, prepare web images with descriptive filenames, useful alt text, suitable dimensions, and relevant page context.",
     category: "Better workflows",
     keyword: "image SEO checklist",
     image: "formats",
@@ -557,7 +557,7 @@ export const articles = [
         heading: "Name the image for a person who needs to find it",
         paragraphs: [
           "Use a short, descriptive filename that identifies the image. green-ceramic-planter-front.webp is easier to recognize than IMG_6042-final-final.webp. Do not turn the filename into a long sequence of near-identical search phrases.",
-          "BGZERO appends bgzero to the source stem when exporting and numbers files in a batch archive to prevent collisions. You can rename a finished file for your own catalog. Keep its extension consistent with the actual format; renaming is not a format conversion.",
+          "rmvbackground appends rmvbackground to the source stem when exporting and numbers files in a batch archive to prevent collisions. You can rename a finished file for your own catalog. Keep its extension consistent with the actual format; renaming is not a format conversion.",
         ],
       },
       {
@@ -598,7 +598,7 @@ export const articles = [
 ].map((article) => ({
   ...article,
   date: "2026-10-09",
-  author: "BGZERO",
+  author: "rmvbackground",
   minutes: Math.max(
     2,
     Math.ceil(

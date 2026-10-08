@@ -1,4 +1,4 @@
-# BGZERO — Background removal studio
+# rmvbackground — Free background remover
 
 [Open the studio](https://bgzero-rho.vercel.app/) · [Read the guides](https://bgzero-rho.vercel.app/blog) · [Privacy](https://bgzero-rho.vercel.app/privacy)
 
@@ -34,7 +34,9 @@ npm run check:pages
 
 The build generates 17 HTML pages in `frontend/dist`. Deploy `frontend` with
 its `vercel.json` and clean HTML URLs. Production needs `VITE_API_URL`.
-`SITE_URL` controls canonical URLs; it defaults to the public site above.
+`SITE_URL` controls canonical URLs; it defaults to the working public site above.
+The intended custom domain is `rmvbackground.com`. Set `SITE_URL` to its HTTPS
+origin and redeploy once the domain is connected; see [the launch steps](docs/SEO.md#rmvbackgroundcom-launch).
 
 With the dev server at port 4198, run:
 

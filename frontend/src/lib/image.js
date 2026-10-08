@@ -31,7 +31,7 @@ export function outputName(name, format, index) {
       .replace(/[^a-zA-Z0-9_-]+/g, "-")
       .replace(/^-|-$/g, "")
       .slice(0, 100) || "image";
-  return `${stem}-bgzero${index == null ? "" : `-${index + 1}`}.${format}`;
+  return `${stem}-rmvbackground${index == null ? "" : `-${index + 1}`}.${format}`;
 }
 export function fitImage(
   sourceWidth,

@@ -158,8 +158,8 @@ console.log(
     if (
       output.type !== "application/zip" ||
       output.entries.length !== 2 ||
-      !output.entries.includes("plant-bgzero-1.webp") ||
-      !output.entries.includes("plant-bgzero-2.png")
+      !output.entries.includes("plant-rmvbackground-1.webp") ||
+      !output.entries.includes("plant-rmvbackground-2.png")
     )
       throw new Error("ZIP export failed: " + JSON.stringify(output));
     return "PASS: ZIP contains two correctly named files with each image’s export format";

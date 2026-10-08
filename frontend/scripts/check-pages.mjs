@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { articles } from "../src/content/articles.js";
+const origin = (
+  process.env.SITE_URL || "https://bgzero-rho.vercel.app"
+).replace(/\/$/, "");
 const paths = await readdir("dist", { recursive: true });
 const htmlPaths = paths.filter((file) => file.endsWith(".html"));
 assert.equal(articles.length, 10);
@@ -14,10 +17,13 @@ for (const file of htmlPaths) {
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   assert.ok(title && !titles.has(title), `Unique title: ${file}`);
   titles.add(title);
-  assert.match(
-    html,
-    /<link rel="canonical" href="https:\/\/bgzero-rho.vercel.app\//,
+  const route = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
+  assert.ok(
+    html.includes(`<link rel="canonical" href="${origin}${route}"`),
+    `Canonical URL: ${file}`,
   );
+  assert.ok(title.includes("rmvbackground"), `Current brand in title: ${file}`);
+  assert.ok(!html.includes("BGZERO"), `No previous brand copy: ${file}`);
   assert.match(html, /<meta name="description" content=".+?"/);
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `One h1: ${file}`);
   assert.ok(!html.includes("<!--app-html-->"), `Rendered HTML: ${file}`);
