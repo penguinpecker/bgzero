@@ -72,3 +72,33 @@ in every sentence or add hidden keyword blocks. Free access describes the curren
 studio; workspace limits and separate model licensing remain documented.
 
 References: [Google's keyword-stuffing policy](https://developers.google.com/search/docs/essentials/spam-policies#keyword-stuffing) and [domain-migration guidance](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes).
+
+## Metadata copy and keyword targets
+
+All 17 routes have dedicated search titles and descriptions in
+`frontend/src/content/seo.js`. This file is used only during the build, so the
+keyword map adds no browser JavaScript. Each indexed route has one primary topic
+and related terms that are used only where they describe the actual page.
+Editorial article headings remain in `articles.js`; search titles can be shorter.
+
+The homepage targets **free AI background remover**, supported by **remove
+background online free**, **transparent PNG download**, and **bulk background
+remover**. Guides cover transparent PNG creation, free white product backgrounds,
+bulk background removal, hair and fur cutouts, file formats, background color
+changes, profile photos, Shopify images, and image SEO. Legal-page metadata
+summarizes its policy instead of repeating the homepage pitch.
+
+The build emits one title and description per route, matching Open Graph and X
+copy, canonical URLs, application/author tags, image-preview URLs and descriptive
+image alt text. Article structured data includes its representative image. The
+404 remains noindexed. Existing route paths and publication dates are preserved.
+
+Titles and descriptions are deliberately concise, without treating editorial
+length targets as Google-enforced character limits;
+search results may truncate or rewrite the supplied copy. No ranking gains or
+search volumes are assumed. Keyword targets are not emitted as a meta-keywords
+tag, which Google Search does not use for indexing or ranking.
+
+References: [title-link guidance](https://developers.google.com/search/docs/appearance/title-link),
+[description guidance](https://developers.google.com/search/docs/appearance/snippet),
+and [supported meta tags](https://developers.google.com/search/docs/crawling-indexing/special-tags).

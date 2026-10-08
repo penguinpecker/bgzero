@@ -3,6 +3,7 @@ import path from "node:path";
 import { createServer } from "vite";
 import React from "react";
 import { renderToString } from "react-dom/server";
+import { pageMetadata } from "../src/content/seo.js";
 
 const origin = (
   process.env.SITE_URL || "https://rmvbackground.vercel.app"
@@ -32,46 +33,48 @@ try {
   const manifest = JSON.parse(
     await readFile("dist/.vite/manifest.json", "utf8"),
   );
-  const pages = [
-    {
-      route: "/",
-      title: "Free Background Remover Online | rmvbackground",
-      description:
-        "Remove backgrounds for free with rmvbackground. Download transparent PNGs, change background colors, and export batches. No sign-up or watermarks.",
-    },
-    {
-      route: "/blog",
-      title: "Free Background Removal Guides | rmvbackground",
-      description:
-        "Learn free background removal with practical guides to transparent PNGs, product photos, batch editing, background colors, and image SEO.",
-    },
-    {
-      route: "/about",
-      title: "About rmvbackground | Free Background Remover",
-      description:
-        "Meet rmvbackground, a free background remover with transparent PNG downloads, batch editing, and practical image guides. Learn how the studio works.",
-    },
-    ...Object.entries(policies).map(([slug, policy]) => ({
-      route: `/${slug}`,
-      title: `${policy.title} | rmvbackground`,
-      description: policy.description,
-    })),
-    ...articles.map((article) => ({
-      route: `/blog/${article.slug}`,
-      title: `${article.title} | rmvbackground`,
-      description: article.description,
-      article,
-    })),
-    {
-      route: "/404",
-      title: "Page not found | rmvbackground",
-      description:
-        "This page could not be found. Return to the background removal studio or browse the rmvbackground journal.",
-      noindex: true,
-    },
+  const routes = [
+    "/",
+    "/blog",
+    "/about",
+    ...Object.keys(policies).map((slug) => `/${slug}`),
+    ...articles.map((article) => `/blog/${article.slug}`),
+    "/404",
   ];
+  const pages = routes.map((route) => {
+    if (!pageMetadata[route])
+      throw new Error(`Missing search metadata for ${route}`);
+    return {
+      route,
+      ...pageMetadata[route],
+      article: articles.find((article) => route === `/blog/${article.slug}`),
+      noindex: route === "/404",
+    };
+  });
+  const socialImages = {
+    plant: {
+      file: "plant.jpg",
+      width: 1000,
+      height: 666,
+      alt: "A succulent in a pale turquoise pot used in the background removal demo.",
+    },
+    sneaker: {
+      file: "sneaker.jpg",
+      width: 900,
+      height: 600,
+      alt: "A red sneaker used in the product photo background removal guides.",
+    },
+    portrait: {
+      file: "portrait.jpg",
+      width: 900,
+      height: 1350,
+      alt: "A portrait used in the profile picture and hair cutout guides.",
+    },
+  };
   for (const page of pages) {
     const url = origin + (page.route === "/" ? "/" : page.route);
+    const socialImage = socialImages[page.article?.image] || socialImages.plant;
+    const imageUrl = `${origin}/images/${socialImage.file}`;
     const organization = {
       "@type": "Organization",
       name: "rmvbackground",
@@ -86,6 +89,7 @@ try {
             headline: page.article.title,
             description: page.description,
             mainEntityOfPage: url,
+            image: imageUrl,
             datePublished: `${page.article.date}T00:00:00+05:30`,
             dateModified: `${page.article.date}T00:00:00+05:30`,
             author: { ...organization, url: `${origin}/about` },
@@ -158,6 +162,8 @@ try {
       : "";
     const metadata = `${interactivePreload}<title>${escape(page.title)}</title>
     <meta name="description" content="${escape(page.description)}" />
+    <meta name="application-name" content="rmvbackground" />
+    <meta name="author" content="rmvbackground" />
     <meta name="robots" content="${page.noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}" />
     <link rel="canonical" href="${escape(url)}" />
     <meta property="og:type" content="${page.article ? "article" : "website"}" />
@@ -165,7 +171,15 @@ try {
     <meta property="og:title" content="${escape(page.title)}" />
     <meta property="og:description" content="${escape(page.description)}" />
     <meta property="og:url" content="${escape(url)}" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="${escape(imageUrl)}" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="${socialImage.width}" />
+    <meta property="og:image:height" content="${socialImage.height}" />
+    <meta property="og:image:alt" content="${escape(socialImage.alt)}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${escape(imageUrl)}" />
+    <meta name="twitter:image:alt" content="${escape(socialImage.alt)}" />
     <meta name="twitter:title" content="${escape(page.title)}" />
     <meta name="twitter:description" content="${escape(page.description)}" />
     ${page.article ? `<meta property="article:published_time" content="${page.article.date}T00:00:00+05:30" />` : ""}

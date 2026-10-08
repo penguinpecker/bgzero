@@ -12,6 +12,7 @@ assert.equal(htmlPaths.length, 17);
 const slugs = new Set(articles.map((article) => article.slug));
 assert.equal(slugs.size, 10);
 const titles = new Set();
+const descriptions = new Set();
 for (const file of htmlPaths) {
   const html = await readFile(path.join("dist", file), "utf8");
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
@@ -24,7 +25,48 @@ for (const file of htmlPaths) {
   );
   assert.ok(title.includes("rmvbackground"), `Current brand in title: ${file}`);
   assert.ok(!html.includes("BGZERO"), `No previous brand copy: ${file}`);
-  assert.match(html, /<meta name="description" content=".+?"/);
+  const meta = (attribute, name) => {
+    const matches = [
+      ...html.matchAll(
+        new RegExp(`<meta ${attribute}="${name}" content="([^"]*)"`, "g"),
+      ),
+    ];
+    assert.equal(matches.length, 1, `One ${name} tag: ${file}`);
+    assert.ok(matches[0][1].trim(), `Nonempty ${name}: ${file}`);
+    return matches[0][1];
+  };
+  assert.equal((html.match(/<title>/g) || []).length, 1, `One title: ${file}`);
+  const description = meta("name", "description");
+  assert.ok(!descriptions.has(description), `Unique description: ${file}`);
+  descriptions.add(description);
+  assert.equal(meta("property", "og:title"), title, `Social title: ${file}`);
+  assert.equal(
+    meta("property", "og:description"),
+    description,
+    `Social description: ${file}`,
+  );
+  assert.equal(meta("name", "twitter:title"), title, `X title: ${file}`);
+  assert.equal(
+    meta("name", "twitter:description"),
+    description,
+    `X description: ${file}`,
+  );
+  const socialImage = meta("property", "og:image");
+  assert.equal(
+    meta("name", "twitter:image"),
+    socialImage,
+    `Shared preview image: ${file}`,
+  );
+  assert.ok(
+    socialImage.startsWith(`${origin}/`),
+    `Absolute preview URL: ${file}`,
+  );
+  assert.ok(
+    paths.includes(new URL(socialImage).pathname.slice(1)),
+    `Existing preview image: ${file}`,
+  );
+  meta("property", "og:image:alt");
+  meta("name", "twitter:image:alt");
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `One h1: ${file}`);
   assert.ok(!html.includes("<!--app-html-->"), `Rendered HTML: ${file}`);
   assert.equal(
@@ -77,5 +119,5 @@ assert.equal((sitemap.match(/<loc>/g) || []).length, 16);
 assert.ok(!sitemap.includes("/404"));
 assert.match(await readFile("dist/404.html", "utf8"), /noindex, follow/);
 console.log(
-  "PASS: 17 rendered pages; 10 substantive guides; unique metadata; structured data; all internal links; 16 sitemap URLs; noindexed 404.",
+  "PASS: 17 rendered pages; 10 substantive guides; unique metadata; matching social tags and preview images; structured data; all internal links; 16 sitemap URLs; noindexed 404.",
 );
