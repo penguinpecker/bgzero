@@ -1,0 +1,51 @@
+# BGZERO search content and link plan
+
+The site contains ten original practical guides (approximately 400–440 words each), one blog index, an about page, and three policy pages. Articles link back to the studio, to three relevant guides, and to official resources. These are internal links and outbound citations. No external backlinks have been acquired or claimed.
+
+## Search intent map
+
+| Page                                    | Primary query intent                     | Supporting queries                                |
+| --------------------------------------- | ---------------------------------------- | ------------------------------------------------- |
+| `/`                                     | free background remover                  | remove image background, transparent image maker  |
+| `/blog/remove-background-from-image`    | remove background from image             | background removal tutorial, photo cutout         |
+| `/blog/make-transparent-png`            | make transparent PNG                     | PNG with no background, transparent image         |
+| `/blog/white-background-product-photos` | white background product photos          | product background remover, clean product photo   |
+| `/blog/batch-background-removal`        | batch background removal                 | bulk background remover, download image batch     |
+| `/blog/remove-background-hair-fur`      | remove background hair fur               | hair cutout, background removal halos             |
+| `/blog/png-vs-webp-vs-jpg`              | PNG vs WebP vs JPG                       | transparent image format, PNG or WebP             |
+| `/blog/change-image-background-color`   | change image background color            | replace photo background color                    |
+| `/blog/profile-picture-background`      | profile picture background remover       | clean profile photo background                    |
+| `/blog/shopify-product-image-workflow`  | Shopify product image background removal | Shopify image workflow, product photo consistency |
+| `/blog/image-seo-checklist`             | image SEO checklist                      | image filenames, product photo alt text           |
+
+These are editorial targets based on the product's capabilities, not measured search-volume or ranking claims. No paid keyword dataset or Search Console history was available.
+
+## Implemented technical SEO
+
+- Complete, prerendered HTML for all 16 public content routes; JavaScript hydrates the interface.
+- Unique page titles and descriptions, canonical URLs, Open Graph and X summary metadata.
+- BlogPosting and BreadcrumbList structured data for articles; WebApplication and WebSite data on the home page.
+- `/sitemap.xml` and `/robots.txt`; noindexed branded 404 with a real 404 response on Vercel.
+- Actual publication date for all new articles, organization byline linked to the about page, and official references.
+- Locally served fonts and sample assets, responsive layouts, keyboard controls, meaningful alt text, and related-guide links.
+- No fabricated testimonials, review ratings, search metrics, author credentials, or publication history.
+
+## Earned backlinks: practical next actions
+
+These are proposals, not submitted outreach or acquired links. External publication requires authorization and a publisher's acceptance.
+
+1. Link the studio and relevant guides from the repository README. The prepared README contains these links; they become public when the branch is merged or viewed.
+2. Offer an original before/after walkthrough to photography and ecommerce educators who already publish tutorials. Match the proposed example to their audience and disclose your relationship to BGZERO.
+3. Create a small reproducible set of licensed photos and a transparent-format comparison. Publish the files and exact settings; educators can cite a useful reference instead of a generic marketing claim.
+4. Prepare a launch submission for a relevant tool directory only after checking its current submission rules and confirming that the operator wants a listing. Avoid bulk directory packages and paid ranking links.
+5. Answer specific community questions with genuinely useful steps. Link a guide only if the community rules permit it and it directly answers the question; disclose that you operate the tool.
+
+Suggested outreach draft, not sent:
+
+> Hello — I maintain BGZERO, a background removal tool. Your tutorial on preparing product images covers a workflow our readers also ask about. We published a practical guide with a transparent-master workflow, edge checks, and format choices: [choose the relevant guide URL]. If it would help your readers, you are welcome to cite it. I can also provide the source and exported files for a reproducible example. No reciprocal link is required.
+
+## Measuring the outcome
+
+After the site owner connects the property to Google Search Console, submit `https://bgzero-rho.vercel.app/sitemap.xml`. Check indexing, then compare impressions, clicks, and relevant queries over a meaningful period. Update articles when the product changes or user questions reveal missing information. Publishing and linking do not guarantee indexing or higher positions.
+
+Primary references: [Google's people-first content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content), [image SEO guidance](https://developers.google.com/search/docs/appearance/google-images), and [link-spam policies](https://developers.google.com/search/docs/essentials/spam-policies#link-spam).
