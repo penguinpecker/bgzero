@@ -46,7 +46,7 @@ Suggested outreach draft, not sent:
 
 ## Measuring the outcome
 
-After the site owner connects the property to Google Search Console, submit `https://bgzero-rho.vercel.app/sitemap.xml`. Check indexing, then compare impressions, clicks, and relevant queries over a meaningful period. Update articles when the product changes or user questions reveal missing information. Publishing and linking do not guarantee indexing or higher positions.
+After the site owner connects the property to Google Search Console, submit `https://rmvbackground.vercel.app/sitemap.xml`. Check indexing, then compare impressions, clicks, and relevant queries over a meaningful period. Update articles when the product changes or user questions reveal missing information. Publishing and linking do not guarantee indexing or higher positions.
 
 Primary references: [Google's people-first content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content), [image SEO guidance](https://developers.google.com/search/docs/appearance/google-images), and [link-spam policies](https://developers.google.com/search/docs/essentials/spam-policies#link-spam).
 
@@ -54,8 +54,10 @@ Primary references: [Google's people-first content guidance](https://developers.
 
 The public brand is **rmvbackground**. As checked on October 9, 2026, the intended
 custom domain did not resolve in DNS and was not assigned to the Vercel project.
-Canonical URLs, structured-data URLs, and the sitemap therefore continue to use
-the working deployment origin until the domain is live. The repository and API
+Canonical URLs, structured-data URLs, and the sitemap use
+`https://rmvbackground.vercel.app` until the custom domain is live. The previous
+`bgzero-rho.vercel.app` hostname redirects permanently to the same path on the
+new Vercel address. The repository and API
 retain their existing technical addresses.
 
 1. Connect the owned domain to the existing Vercel project and configure the exact DNS records Vercel returns. Check HTTPS and all content routes.

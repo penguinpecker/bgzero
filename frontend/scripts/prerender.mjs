@@ -5,7 +5,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 
 const origin = (
-  process.env.SITE_URL || "https://bgzero-rho.vercel.app"
+  process.env.SITE_URL || "https://rmvbackground.vercel.app"
 ).replace(/\/$/, "");
 if (new URL(origin).protocol !== "https:")
   throw new Error("SITE_URL must use https");

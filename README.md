@@ -1,6 +1,6 @@
 # rmvbackground — Free background remover
 
-[Open the studio](https://bgzero-rho.vercel.app/) · [Read the guides](https://bgzero-rho.vercel.app/blog) · [Privacy](https://bgzero-rho.vercel.app/privacy)
+[Open the studio](https://rmvbackground.vercel.app/) · [Read the guides](https://rmvbackground.vercel.app/blog) · [Privacy](https://rmvbackground.vercel.app/privacy)
 
 A React/Vite background removal workspace with a FastAPI processing backend.
 The public deployment uses the existing hosted Modal processor.

@@ -3,7 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { articles } from "../src/content/articles.js";
 const origin = (
-  process.env.SITE_URL || "https://bgzero-rho.vercel.app"
+  process.env.SITE_URL || "https://rmvbackground.vercel.app"
 ).replace(/\/$/, "");
 const paths = await readdir("dist", { recursive: true });
 const htmlPaths = paths.filter((file) => file.endsWith(".html"));
