@@ -21,6 +21,17 @@ for (const file of htmlPaths) {
   assert.match(html, /<meta name="description" content=".+?"/);
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `One h1: ${file}`);
   assert.ok(!html.includes("<!--app-html-->"), `Rendered HTML: ${file}`);
+  assert.equal(
+    /<script type="module"/.test(html),
+    ["index.html", "blog.html"].includes(file),
+    `Only interactive pages load JavaScript: ${file}`,
+  );
+  for (const match of html.matchAll(/src="(\/images\/[^" ]+)"/g)) {
+    assert.ok(
+      paths.includes(match[1].slice(1)),
+      `Missing display asset in ${file}: ${match[1]}`,
+    );
+  }
   for (const match of html.matchAll(/href="(\/[^"#?]*)(?:[#?][^"]*)?"/g)) {
     const href = match[1];
     const target =

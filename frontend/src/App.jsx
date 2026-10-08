@@ -145,8 +145,7 @@ function Home() {
         </div>
         <div className="hero-description">
           <p>
-            Turn any photo into a clean cutout.{" "}
-            <br />
+            Turn any photo into a clean cutout. <br />
             Remove the background, make it your own,
             <br className="desktop-break" /> and get back to creating.
           </p>
@@ -160,7 +159,9 @@ function Home() {
           </div>
         </div>
       </section>
-      <Studio />
+      <div id="studio-root">
+        <Studio />
+      </div>
       <div className="tool-benefits">
         <span>
           <Icon name="spark" size={18} />
@@ -247,7 +248,7 @@ function Home() {
           >
             <div className="usecase-visual">
               <img
-                src="/images/sneaker.jpg"
+                src="/images/sneaker-display.webp"
                 alt="Red sneaker photographed for a product listing"
                 loading="lazy"
               />
@@ -271,7 +272,7 @@ function Home() {
           >
             <div className="usecase-visual">
               <img
-                src="/images/portrait.jpg"
+                src="/images/portrait-display.webp"
                 alt="Portrait for a profile picture"
                 loading="lazy"
               />
@@ -384,7 +385,7 @@ function About() {
       <div className="about-grid">
         <div className="about-image checker">
           <img
-            src="/images/plant-cutout.png"
+            src="/images/plant-cutout-display.webp"
             alt="Succulent plant with its background removed"
           />
         </div>
@@ -463,7 +464,9 @@ export default function App({ path = "/" }) {
         {normalized === "/" ? (
           <Home />
         ) : normalized === "/blog" ? (
-          <Journal />
+          <div id="journal-root">
+            <Journal />
+          </div>
         ) : article ? (
           <ArticlePage article={article} />
         ) : policy ? (

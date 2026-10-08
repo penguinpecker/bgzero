@@ -16,15 +16,15 @@ export function ArticleArt({ article, large = false }) {
         </div>
       ) : article.image === "collection" ? (
         <div className="collection-art">
-          <img src="/images/plant.jpg" alt="" loading="lazy" />
-          <img src="/images/sneaker.jpg" alt="" loading="lazy" />
-          <img src="/images/portrait.jpg" alt="" loading="lazy" />
+          <img src="/images/plant-display.webp" alt="" loading="lazy" />
+          <img src="/images/sneaker-display.webp" alt="" loading="lazy" />
+          <img src="/images/portrait-display.webp" alt="" loading="lazy" />
         </div>
       ) : (
         <>
           <div className="art-frame checker">
             <img
-              src={`/images/${article.image === "plant" ? "plant-cutout.png" : `${article.image}.jpg`}`}
+              src={`/images/${article.image === "plant" ? "plant-cutout-display.webp" : `${article.image}-display.webp`}`}
               alt=""
               loading="lazy"
             />

@@ -402,7 +402,7 @@ h1 {
   user-select: none;
 }
 .studio-visual > .compare {
-  height: 370px;
+  height: 475px;
 }
 .compare-layer {
   position: absolute;
@@ -543,7 +543,7 @@ h1 {
 .upload-panel {
   background: #fff;
   border-radius: 11px;
-  padding: 32px 34px 20px;
+  padding: 42px 38px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -603,26 +603,29 @@ h1 {
   border: 3px solid #fff;
 }
 .upload-panel h2 {
-  font-size: 22px;
+  font-size: 27px;
   font-weight: 540;
   letter-spacing: -0.75px;
 }
 .upload-panel > p:not(.privacy-note) {
-  font-size: 12px;
+  font-size: 15px;
   color: #5e6856;
   line-height: 1.8;
   margin-top: 10px;
 }
 .upload-button {
   margin-top: 21px;
-  min-width: 220px;
-  padding: 15px 20px;
+  width: min(100%, 360px);
+  min-height: 68px;
+  padding: 20px 26px;
+  font-size: 17px;
+  border-radius: 10px;
 }
 .upload-button svg:last-child {
   margin-left: 12px;
 }
 .upload-hint {
-  font-size: 10px;
+  font-size: 12px;
   color: #5e6856;
   margin-top: 15px;
 }
@@ -635,7 +638,7 @@ kbd {
   padding: 2px 4px;
 }
 .file-hint {
-  font-size: 9px;
+  font-size: 11px;
   color: #5e6856;
   margin-top: 13px;
 }
@@ -650,7 +653,7 @@ kbd {
   padding-top: 21px;
 }
 .sample-picker > span {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.8;
   color: #5e6856;
   text-align: left;
@@ -673,13 +676,13 @@ kbd {
   transform: translateY(-3px);
 }
 .sample-picker img {
-  width: 43px;
-  height: 43px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
 }
 .upload-panel > .privacy-note {
-  max-width: 290px;
-  font-size: 8px;
+  max-width: 380px;
+  font-size: 10px;
   line-height: 1.7;
   color: #5e6856;
   margin-top: 17px;
@@ -781,7 +784,7 @@ kbd {
 .editor-canvas {
   position: relative;
   min-height: 370px;
-  height: 422px;
+  height: 510px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2229,8 +2232,9 @@ kbd {
   .upload-button {
     margin-top: 18px;
     width: 100%;
-    max-width: 330px;
-    min-height: 49px;
+    max-width: 380px;
+    min-height: 60px;
+    font-size: 16px;
   }
   .upload-hint {
     margin-top: 13px;
@@ -2821,4 +2825,66 @@ kbd {
 .studio.is-dragging {
   outline: 2px solid var(--orange);
   outline-offset: 3px;
+}
+
+/* Give the tool more space without widening reading pages. */
+@media (min-width: 1101px) {
+  #studio-root {
+    width: min(1400px, calc(100vw - 64px));
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .studio-topline {
+    padding: 21px 26px;
+    font-size: 13px;
+  }
+  .connection {
+    font-size: 12px;
+  }
+  .studio-grid {
+    grid-template-columns: 1.3fr 1fr;
+    padding-inline: 18px;
+    gap: 18px;
+  }
+  .has-images {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+  .demo-bottom {
+    padding-block: 26px;
+  }
+  .demo-bottom > span {
+    font-size: 14px;
+  }
+  .studio-footer {
+    padding: 21px 26px;
+    font-size: 12px;
+  }
+  .mode-picker label,
+  .mode-picker select {
+    font-size: 12px;
+  }
+  .mode-picker > span {
+    font-size: 11px;
+  }
+}
+@media (max-width: 760px) {
+  .upload-panel {
+    padding: 30px 20px 25px;
+  }
+  .upload-panel > p:not(.privacy-note) {
+    font-size: 14px;
+  }
+  .sample-picker > span {
+    font-size: 11px;
+  }
+  .sample-picker img {
+    width: 48px;
+    height: 48px;
+  }
+  .upload-hint {
+    font-size: 11px;
+  }
+  .studio-visual > .compare {
+    height: 310px;
+  }
 }

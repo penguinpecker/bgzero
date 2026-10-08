@@ -13,6 +13,8 @@ The public deployment uses the existing hosted Modal processor.
 - PNG, WebP, and JPG exports and downloadable ZIPs.
 - Ten practical guides, searchable journal, about, terms, privacy, cookies, and branded 404.
 - Prerendered HTML, unique metadata, structured data, sitemap, and robots.txt.
+- Larger responsive workspace, optimized display images, canvas previews, and ZIP creation in a worker.
+- Original PNG downloads reuse the server output; article and legal pages need no application JavaScript.
 
 ### Run and verify
 
@@ -39,6 +41,17 @@ With the dev server at port 4198, run:
 ```bash
 opera-browser-cli run < scripts/verify-browser.js
 ```
+
+For a full multiselect batch check against the production build, start
+`npm run preview -- --host 127.0.0.1 --port 4199` and run:
+
+```bash
+opera-browser-cli run < scripts/verify-batch.js
+```
+
+This check uploads four images together, unpacks the ZIP, decodes each PNG, checks
+transparency and dimensions, and compares its SHA-256 hash to the server response.
+It also verifies that preview edits do not encode temporary image blobs.
 
 The browser verification uses public sample photos, exercises real processing,
 and temporarily intercepts downloads in the test tab to inspect exported files.

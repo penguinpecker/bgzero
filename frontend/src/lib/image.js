@@ -59,13 +59,7 @@ export function loadImage(src) {
     img.src = src;
   });
 }
-export async function renderImage(
-  src,
-  settings,
-  { preview = false, signal } = {},
-) {
-  const img = await loadImage(src);
-  signal?.throwIfAborted();
+export function drawImage(canvas, img, settings, { preview = false } = {}) {
   const preset = presets[settings.size] || presets.original;
   let width = preset.width || img.naturalWidth,
     height = preset.height || img.naturalHeight;
@@ -74,7 +68,6 @@ export async function renderImage(
     width = Math.round(width * ratio);
     height = Math.round(height * ratio);
   }
-  const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d");
@@ -103,19 +96,43 @@ export async function renderImage(
     ctx.shadowOffsetY = height * 0.018;
   }
   ctx.drawImage(img, box.x, box.y, box.width, box.height);
-  const mime = preview
-    ? "image/png"
-    : `image/${settings.format === "jpg" ? "jpeg" : settings.format}`;
+  return { width, height };
+}
+
+export function isOriginalPng(settings) {
+  return (
+    settings.format === "png" &&
+    settings.background === "transparent" &&
+    settings.size === "original" &&
+    settings.scale === 100 &&
+    !settings.shadow
+  );
+}
+
+export async function renderImage(src, settings, { signal } = {}) {
+  const img = await loadImage(src);
+  signal?.throwIfAborted();
+  const canvas = document.createElement("canvas");
+  const { width, height } = drawImage(canvas, img, settings);
+  const mime = `image/${settings.format === "jpg" ? "jpeg" : settings.format}`;
   const blob = await new Promise((resolve) =>
     canvas.toBlob(resolve, mime, settings.quality / 100),
   );
   signal?.throwIfAborted();
   if (!blob) throw new Error("Image export failed. Try a smaller canvas size.");
-  if (!preview && blob.type !== mime)
+  if (blob.type !== mime)
     throw new Error(
       `Your browser does not support ${settings.format.toUpperCase()} export. Choose PNG instead.`,
     );
   return { blob, width, height };
+}
+
+export async function exportImage(item) {
+  // Reuse the lossless server result instead of decoding and encoding it again.
+  if (item.resultBlob?.type === "image/png" && isOriginalPng(item.settings)) {
+    return { blob: item.resultBlob, width: item.width, height: item.height };
+  }
+  return renderImage(item.resultUrl, item.settings);
 }
 export function saveBlob(blob, name) {
   const url = URL.createObjectURL(blob);

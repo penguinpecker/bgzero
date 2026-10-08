@@ -2,6 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   validateFile,
+  defaultSettings,
+  exportImage,
+  isOriginalPng,
   fitImage,
   outputName,
   MAX_FILE_BYTES,
@@ -56,4 +59,27 @@ test("exports use the requested format and make duplicate archive names distinct
     outputName("product.jpg", "png", 1),
   );
   assert.equal(outputName("../../photo.png", "jpg", 0), "photo-bgzero-1.jpg");
+});
+
+test("unchanged PNG exports reuse original lossless bytes without a canvas encode", async () => {
+  const blob = new Blob([new Uint8Array([137, 80, 78, 71])], {
+    type: "image/png",
+  });
+  const result = await exportImage({
+    resultBlob: blob,
+    settings: defaultSettings,
+    width: 1000,
+    height: 666,
+  });
+  assert.equal(result.blob, blob);
+  assert.equal(result.width, 1000);
+  for (const change of [
+    { format: "webp" },
+    { background: "#ffffff" },
+    { size: "square" },
+    { scale: 80 },
+    { shadow: true },
+  ]) {
+    assert.equal(isOriginalPng({ ...defaultSettings, ...change }), false);
+  }
 });

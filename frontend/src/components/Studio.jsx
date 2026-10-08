@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "./Icon";
 import Compare from "./Compare";
+import ImagePreview from "./ImagePreview";
+import { zipFiles } from "../lib/zip";
 import {
   defaultSettings,
   presets,
   validateFile,
   loadImage,
-  renderImage,
+  exportImage,
   saveBlob,
   outputName,
   MAX_FILES,
@@ -48,7 +50,6 @@ export default function Studio() {
   const [connection, setConnection] = useState("checking");
   const [message, setMessage] = useState("");
   const [dragging, setDragging] = useState(false);
-  const [preview, setPreview] = useState(null);
   const [view, setView] = useState("result");
   const [exporting, setExporting] = useState(false);
   const [sampleLoading, setSampleLoading] = useState(false);
@@ -182,6 +183,7 @@ export default function Studio() {
           update(job.id, {
             status: "done",
             resultUrl,
+            resultBlob: blob,
             width: image.naturalWidth,
             height: image.naturalHeight,
           });
@@ -279,30 +281,6 @@ export default function Studio() {
     return () => document.removeEventListener("paste", paste);
   }, [addFiles]);
 
-  useEffect(() => {
-    setPreview(null);
-    if (!active?.resultUrl) return;
-    const controller = new AbortController();
-    let url;
-    const timer = setTimeout(async () => {
-      try {
-        const output = await renderImage(active.resultUrl, active.settings, {
-          preview: true,
-          signal: controller.signal,
-        });
-        url = URL.createObjectURL(output.blob);
-        setPreview(url);
-      } catch (error) {
-        if (!controller.signal.aborted) setMessage(error.message);
-      }
-    }, 80);
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-      if (url) URL.revokeObjectURL(url);
-    };
-  }, [active?.resultUrl, active?.settings]);
-
   const setSetting = (key, value) => {
     if (active) update(active.id, { settings: { ...settings, [key]: value } });
   };
@@ -354,11 +332,10 @@ export default function Studio() {
     setMessage("");
     try {
       if (all) {
-        const { zipSync } = await import("fflate");
         const files = {};
         let bytes = 0;
         for (const [index, item] of done.entries()) {
-          const { blob } = await renderImage(item.resultUrl, item.settings);
+          const { blob } = await exportImage(item);
           bytes += blob.size;
           if (bytes > 250 * 1024 * 1024)
             throw new Error(
@@ -367,12 +344,9 @@ export default function Studio() {
           files[outputName(item.file.name, item.settings.format, index)] =
             new Uint8Array(await blob.arrayBuffer());
         }
-        saveBlob(
-          new Blob([zipSync(files, { level: 0 })], { type: "application/zip" }),
-          "bgzero-images.zip",
-        );
+        saveBlob(await zipFiles(files), "bgzero-images.zip");
       } else if (active?.resultUrl) {
-        const { blob } = await renderImage(active.resultUrl, active.settings);
+        const { blob } = await exportImage(active);
         saveBlob(blob, outputName(active.file.name, active.settings.format));
       }
     } catch (error) {
@@ -450,8 +424,8 @@ export default function Studio() {
           {!active ? (
             <>
               <Compare
-                original="/images/plant.jpg"
-                result="/images/plant-cutout.png"
+                original="/images/plant-display.webp"
+                result="/images/plant-cutout-display.webp"
                 label="Potted succulent sample"
                 background={demoBackground}
               />
@@ -507,19 +481,19 @@ export default function Studio() {
                       result={active.resultUrl}
                       label={active.file.name}
                     />
-                  ) : (
+                  ) : view === "original" ? (
                     <img
                       className="result-image"
-                      src={
-                        view === "original"
-                          ? active.originalUrl
-                          : preview || active.resultUrl
-                      }
-                      alt={
-                        view === "original"
-                          ? `Original ${active.file.name}`
-                          : `Edited ${active.file.name}`
-                      }
+                      src={active.originalUrl}
+                      alt={`Original ${active.file.name}`}
+                    />
+                  ) : (
+                    <ImagePreview
+                      key={active.id}
+                      src={active.resultUrl}
+                      settings={active.settings}
+                      label={`Edited ${active.file.name}`}
+                      onError={setMessage}
                     />
                   )
                 ) : (
@@ -636,7 +610,7 @@ export default function Studio() {
                     onClick={() => sample(item.file)}
                   >
                     <img
-                      src={`/images/${item.file}`}
+                      src={`/images/${item.file.replace(".jpg", "-thumb.webp")}`}
                       alt={item.name}
                       width="48"
                       height="48"

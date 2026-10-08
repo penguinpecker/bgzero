@@ -29,6 +29,9 @@ try {
     /<title>.*?<\/title>/,
     "",
   );
+  const manifest = JSON.parse(
+    await readFile("dist/.vite/manifest.json", "utf8"),
+  );
   const pages = [
     {
       route: "/",
@@ -143,7 +146,16 @@ try {
             },
           ]
         : [];
-    const metadata = `<title>${escape(page.title)}</title>
+    const interactiveEntry =
+      page.route === "/"
+        ? "src/components/Studio.jsx"
+        : page.route === "/blog"
+          ? "src/components/Journal.jsx"
+          : null;
+    const interactivePreload = interactiveEntry
+      ? `<link rel="modulepreload" crossorigin href="/${escape(manifest[interactiveEntry].file)}" />`
+      : "";
+    const metadata = `${interactivePreload}<title>${escape(page.title)}</title>
     <meta name="description" content="${escape(page.description)}" />
     <meta name="robots" content="${page.noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}" />
     <link rel="canonical" href="${escape(url)}" />
@@ -157,12 +169,18 @@ try {
     <meta name="twitter:description" content="${escape(page.description)}" />
     ${page.article ? `<meta property="article:published_time" content="${page.article.date}T00:00:00+05:30" />` : ""}
     ${graph.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`).join("\n")}`;
-    const html = template
+    let html = template
       .replace("<!--page-meta-->", metadata)
       .replace(
         "<!--app-html-->",
         renderToString(React.createElement(App, { path: page.route })),
       );
+    // Articles and policies are complete HTML and need no React runtime.
+    if (!["/", "/blog"].includes(page.route)) {
+      html = html
+        .replace(/<script type="module"[^>]*><\/script>/g, "")
+        .replace(/<link rel="modulepreload"[^>]*>/g, "");
+    }
     const file = path.join(
       "dist",
       page.route === "/" ? "index.html" : `${page.route.slice(1)}.html`,
