@@ -1,0 +1,12 @@
+rmvbackground sample and editorial imagery
+
+plant.jpg: https://images.unsplash.com/photo-1485955900006-10f4d324d411
+sneaker.jpg: https://images.unsplash.com/photo-1542291026-7eec264c27ff
+portrait.jpg: https://images.unsplash.com/photo-1506794778202-cad84cf45f1d
+Photo source: Unsplash. License: https://unsplash.com/license
+
+plant-cutout.png is the real output of rmvbackground's existing hosted /remove endpoint,
+using plant.jpg, quality mode, PNG, and no replacement background.
+
+These photos demonstrate the interface. No endorsement by any depicted person,
+photographer, or product brand is implied.

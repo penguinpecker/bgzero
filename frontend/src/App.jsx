@@ -1,199 +1,485 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import Icon from "./components/Icon";
+import Studio from "./components/Studio";
+import { Journal, JournalPreview, ArticlePage } from "./components/Journal";
+import { articleBySlug } from "./content/articles";
+import { policies } from "./content/policies";
 
-const A = import.meta.env.VITE_API_URL || "http://localhost:8420";
-const fB = (b) => b < 1024 ? b + " B" : b < 1048576 ? (b / 1024).toFixed(1) + " KB" : (b / 1048576).toFixed(1) + " MB";
-
-function Drop({ onFiles, disabled, count }) {
-  const [d, setD] = useState(false);
-  const r = useRef(null);
+export const faqs = [
+  [
+    "Is rmvbackground free to use?",
+    "Yes. rmvbackground is a free background remover with no account requirement or export watermark. Processing is subject to service availability and workspace limits. Model licensing is separate; see the terms before relying on it for commercial work.",
+  ],
+  [
+    "Which images can I upload?",
+    "Use JPG, PNG, or WebP files up to 50 MB each. The workspace holds up to 50 images and 150 MB in total. Images must be no larger than 8192 pixels on either side and 40 megapixels.",
+  ],
+  [
+    "Can I download a transparent background?",
+    "Yes. Choose the transparent checkerboard swatch and export as PNG or WebP. JPG cannot store transparency, so transparent areas become white in a JPG export.",
+  ],
+  [
+    "Can I edit several images at once?",
+    "Yes. Upload a batch, then use the thumbnails to edit each result. Every image keeps its own export settings. When two or more results are ready, you can download them together in a ZIP.",
+  ],
+  [
+    "Where are my images processed?",
+    "Images are sent to the configured processing service; the public site uses a Modal-hosted backend. Color, canvas, and export edits happen in your browser. Read the privacy notice for the full data flow.",
+  ],
+  [
+    "Will my workspace be saved?",
+    "Your workspace stays in the current browser tab. Download finished images before refreshing or closing it. rmvbackground does not currently provide accounts or a saved image library.",
+  ],
+];
+function Brand() {
   return (
-    <div
-      onDragOver={(e) => { e.preventDefault(); setD(true); }}
-      onDragLeave={() => setD(false)}
-      onDrop={(e) => { e.preventDefault(); setD(false); if (!disabled) { const f = [...e.dataTransfer.files].filter((f) => f.type.startsWith("image/")); if (f.length) onFiles(f); } }}
-      onClick={() => !disabled && r.current?.click()}
-      style={{ border: "2px dashed " + (d ? "#fff" : "#333"), borderRadius: 16, minHeight: 220, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, cursor: "pointer", transition: "all .3s", background: d ? "rgba(255,255,255,.05)" : "transparent", position: "relative" }}
-    >
-      <input ref={r} type="file" accept="image/*" multiple onChange={(e) => { const f = [...(e.target.files || [])]; if (f.length) onFiles(f); e.target.value = ""; }} style={{ display: "none" }} />
-      <div style={{ width: 56, height: 56, borderRadius: 14, background: "rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" strokeWidth="1.5">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-          <polyline points="17 8 12 3 7 8" />
-          <line x1="12" y1="3" x2="12" y2="15" />
-        </svg>
-      </div>
-      <p style={{ color: "rgba(255,255,255,.6)", fontSize: 14 }}>Drop images here or click to upload</p>
-      <p style={{ color: "rgba(255,255,255,.25)", fontSize: 12 }}>PNG, JPEG, WebP</p>
-      {count > 0 && <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(255,255,255,.1)", color: "rgba(255,255,255,.4)", fontSize: 11, padding: "2px 10px", borderRadius: 99 }}>{count} queued</span>}
-    </div>
+    <a href="/" className="brand" aria-label="rmvbackground home">
+      <span className="brand-icon">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+      <span>
+        rmv<span className="brand-light">background</span>
+        <span className="brand-period">.</span>
+      </span>
+    </a>
   );
 }
-
-function BA({ original, result }) {
-  const [pos, setPos] = useState(50);
-  const ref = useRef(null);
-  const drag = useRef(false);
-  const mv = useCallback((cx) => { if (!ref.current) return; const r = ref.current.getBoundingClientRect(); setPos(Math.max(2, Math.min(98, ((cx - r.left) / r.width) * 100))); }, []);
-  useEffect(() => {
-    const m = (e) => { if (!drag.current) return; mv(e.touches ? e.touches[0].clientX : e.clientX); };
-    const u = () => { drag.current = false; };
-    window.addEventListener("mousemove", m); window.addEventListener("touchmove", m); window.addEventListener("mouseup", u); window.addEventListener("touchend", u);
-    return () => { window.removeEventListener("mousemove", m); window.removeEventListener("touchmove", m); window.removeEventListener("mouseup", u); window.removeEventListener("touchend", u); };
-  }, [mv]);
+function Header({ path }) {
   return (
-    <div ref={ref} style={{ position: "relative", borderRadius: 12, overflow: "hidden", background: "repeating-conic-gradient(#333 0% 25%,#222 0% 50%) 0 0/20px 20px", userSelect: "none" }}>
-      <img src={original} style={{ width: "100%", display: "block" }} draggable={false} />
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden", width: pos + "%" }}>
-        <img src={result} style={{ width: ref.current?.offsetWidth || "100%", display: "block" }} draggable={false} />
+    <header className="site-header">
+      <div className="header-inner">
+        <Brand />
+        <nav aria-label="Main navigation">
+          <a href="/" aria-current={path === "/" ? "page" : undefined}>
+            Free background remover
+          </a>
+          <a href="/#how-it-works">How it works</a>
+          <a
+            href="/blog"
+            aria-current={path.startsWith("/blog") ? "page" : undefined}
+          >
+            Journal
+          </a>
+        </nav>
+        <a
+          className="header-cta"
+          href={
+            path === "/"
+              ? "https://github.com/penguinpecker/bgzero"
+              : "/#studio"
+          }
+        >
+          {path === "/" ? (
+            <>
+              <Icon name="code" size={17} />
+              <span>View source</span>
+              <span>↗</span>
+            </>
+          ) : (
+            <>
+              Open free studio <Icon name="arrow" size={16} />
+            </>
+          )}
+        </a>
       </div>
-      <div onMouseDown={() => { drag.current = true; }} onTouchStart={() => { drag.current = true; }} style={{ position: "absolute", top: 0, bottom: 0, left: pos + "%", width: 2, background: "#fff", cursor: "ew-resize", zIndex: 10 }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 32, height: 32, borderRadius: 99, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,.4)" }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M4 2L1 7L4 12" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M10 2L13 7L10 12" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+    </header>
+  );
+}
+function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="footer-main">
+        <div>
+          <Brand />
+          <p>
+            Less background.
+            <br />
+            More room for your ideas.
+          </p>
+        </div>
+        <div className="footer-links">
+          <div>
+            <strong>Create</strong>
+            <a href="/#studio">Free background remover</a>
+            <a href="/blog">Guides & articles</a>
+            <a href="/about">About rmvbackground</a>
+          </div>
+          <div>
+            <strong>The details</strong>
+            <a href="/terms">Terms of use</a>
+            <a href="/privacy">Privacy notice</a>
+            <a href="/cookies">Cookies & storage</a>
+          </div>
+          <div>
+            <strong>Behind the tool</strong>
+            <a href="https://github.com/penguinpecker/bgzero">Source code ↗</a>
+            <a href="https://github.com/penguinpecker/bgzero/issues">
+              Feedback & support ↗
+            </a>
+          </div>
         </div>
       </div>
-      <span style={{ position: "absolute", top: 8, left: 8, background: "rgba(0,0,0,.6)", color: "rgba(255,255,255,.7)", fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 500, textTransform: "uppercase", letterSpacing: 1 }}>Result</span>
-      <span style={{ position: "absolute", top: 8, right: 8, background: "rgba(0,0,0,.6)", color: "rgba(255,255,255,.7)", fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 500, textTransform: "uppercase", letterSpacing: 1 }}>Original</span>
-    </div>
+      <div className="footer-bottom">
+        <span>© 2026 rmvbackground</span>
+        <span>Made for the part worth keeping.</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </footer>
   );
 }
-
-export default function App() {
-  const [items, setItems] = useState([]);
-  const [mode, setMode] = useState("quality");
-  const [fmt, setFmt] = useState("png");
-  const [bg, setBg] = useState("transparent");
-  const [conn, setConn] = useState(null);
-  const proc = useRef(false);
-  const q = useRef([]);
-  const idC = useRef(0);
-
-  useEffect(() => { fetch(A + "/health").then((r) => r.json()).then((d) => setConn(d)).catch(() => setConn(false)); }, []);
-
-  const upd = (id, u) => setItems((p) => p.map((i) => (i.id === id ? { ...i, ...u } : i)));
-
-  const next = useCallback(async () => {
-    if (proc.current || !q.current.length) return;
-    proc.current = true;
-    const id = q.current.shift();
-    let file;
-    setItems((p) => { file = p.find((i) => i.id === id)?.file; return p.map((i) => (i.id === id ? { ...i, status: "processing" } : i)); });
-    await new Promise((r) => setTimeout(r, 50));
-    if (!file) { proc.current = false; next(); return; }
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("mode", mode);
-      fd.append("format", fmt);
-      fd.append("bg_color", bg === "transparent" ? "none" : bg.replace("#", ""));
-      const t = performance.now();
-      const res = await fetch(A + "/remove", { method: "POST", body: fd });
-      if (!res.ok) throw new Error((await res.text()) || "HTTP " + res.status);
-      const blob = await res.blob();
-      upd(id, { status: "done", resultUrl: URL.createObjectURL(blob), timeMs: performance.now() - t, serverMs: res.headers.get("X-Processing-Time-Ms") });
-    } catch (e) { upd(id, { status: "error", error: e.message }); }
-    proc.current = false;
-    next();
-  }, [mode, fmt, bg]);
-
-  const addFiles = useCallback((files) => {
-    const nw = files.map((f) => ({ id: ++idC.current, file: f, originalUrl: URL.createObjectURL(f), status: "queued", resultUrl: null, timeMs: null, error: null }));
-    setItems((p) => [...nw, ...p]);
-    nw.forEach((i) => q.current.push(i.id));
-    next();
-  }, [next]);
-
-  const dl = (i) => { if (!i.resultUrl) return; const a = document.createElement("a"); a.href = i.resultUrl; a.download = i.file.name.replace(/\.[^.]+$/, "") + "_nobg." + fmt; a.click(); };
-  const retry = (id) => { upd(id, { status: "queued", error: null }); q.current.push(id); next(); };
-  const act = items.filter((i) => i.status === "processing" || i.status === "queued").length;
-  const done = items.filter((i) => i.status === "done").length;
-  const bs = (on, extra = {}) => ({ ...extra, padding: "6px 14px", fontSize: 12, borderRadius: 8, border: "none", cursor: "pointer", transition: "all .2s", background: on ? "#fff" : "transparent", color: on ? "#000" : "rgba(255,255,255,.4)", fontWeight: on ? 500 : 400 });
-
+function Home() {
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(145deg,#0a0a0a,#111 40%,#0d0d0d)", color: "#fff", fontFamily: "system-ui,sans-serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 16px" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.03em", margin: 0, fontFamily: "DM Sans" }}>
-            BG<span style={{ color: "rgba(255,255,255,.25)", fontWeight: 300 }}>ZERO</span>
+    <>
+      <section className="hero-intro">
+        <div>
+          <span className="eyebrow">
+            <span className="status-dot" /> Free online image studio
+          </span>
+          <h1>
+            Free background <br />
+            <span>remover.</span>
           </h1>
-          {conn === false ? <span style={{ fontSize: 10, background: "rgba(239,68,68,.15)", color: "#f87171", padding: "2px 8px", borderRadius: 99, fontFamily: "JetBrains Mono" }}>OFFLINE</span>
-            : conn ? <span style={{ fontSize: 10, background: "rgba(16,185,129,.15)", color: "#34d399", padding: "2px 8px", borderRadius: 99, fontFamily: "JetBrains Mono" }}>{String(conn.device).toUpperCase()}</span>
-              : <span style={{ fontSize: 10, background: "rgba(255,255,255,.05)", color: "rgba(255,255,255,.3)", padding: "2px 8px", borderRadius: 99, fontFamily: "JetBrains Mono" }}>...</span>}
         </div>
-        <p style={{ color: "rgba(255,255,255,.25)", fontSize: 13, margin: "0 0 24px", fontFamily: "DM Sans" }}>Background removal on your hardware. No limits.</p>
-
-        {/* Controls */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 20 }}>
+        <div className="hero-description">
+          <p>
+            Remove image backgrounds for free. <br />
+            Make a transparent PNG, choose a new color,
+            <br className="desktop-break" /> and download at full resolution.
+          </p>
           <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Mode</div>
-            <div style={{ display: "flex", gap: 2, background: "rgba(255,255,255,.04)", borderRadius: 10, padding: 2 }}>
-              {["fast", "quality", "ultra", "matting"].map((m) => <button key={m} onClick={() => setMode(m)} style={bs(mode === m)}>{m[0].toUpperCase() + m.slice(1)}</button>)}
-            </div>
-          </div>
-          <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Format</div>
-            <div style={{ display: "flex", gap: 2, background: "rgba(255,255,255,.04)", borderRadius: 10, padding: 2 }}>
-              {["png", "webp", "jpg"].map((f) => <button key={f} onClick={() => setFmt(f)} style={bs(fmt === f, { fontFamily: "JetBrains Mono" })}>{f.toUpperCase()}</button>)}
-            </div>
-          </div>
-          <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Background</div>
-            <div style={{ display: "flex", gap: 6, alignItems: "center", background: "rgba(255,255,255,.04)", borderRadius: 10, padding: 4 }}>
-              {[{ id: "transparent", s: "conic-gradient(#666 25%,#444 25% 50%,#666 50% 75%,#444 75%)" }, { id: "#ffffff", s: "#fff" }, { id: "#000000", s: "#000" }].map((b) =>
-                <button key={b.id} onClick={() => setBg(b.id)} style={{ width: 28, height: 28, borderRadius: 8, border: bg === b.id ? "2px solid #fff" : "2px solid transparent", background: b.s, cursor: "pointer", padding: 0 }} />
-              )}
-              <input type="color" value={bg.startsWith("#") ? bg : "#ffffff"} onChange={(e) => setBg(e.target.value)} style={{ width: 28, height: 28, borderRadius: 8, cursor: "pointer", border: "none", padding: 0, background: "transparent" }} />
-            </div>
+            <span>
+              <Icon name="check" size={15} /> No sign-up
+            </span>
+            <span>
+              <Icon name="check" size={15} /> No watermarks
+            </span>
           </div>
         </div>
-
-        <Drop onFiles={addFiles} disabled={conn === false} count={act} />
-
-        {done > 1 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,.04)", borderRadius: 12, padding: "10px 16px", margin: "16px 0" }}>
-            <span style={{ color: "rgba(255,255,255,.4)", fontSize: 13 }}>{done} done</span>
-            <button onClick={() => items.filter((i) => i.status === "done").forEach((i) => setTimeout(() => dl(i), 100))} style={{ fontSize: 12, fontWeight: 500, background: "#fff", color: "#000", border: "none", padding: "6px 16px", borderRadius: 8, cursor: "pointer" }}>Download All</button>
+      </section>
+      <div id="studio-root">
+        <Studio />
+      </div>
+      <div className="tool-benefits">
+        <span>
+          <Icon name="spark" size={18} />
+          AI-powered cutouts
+        </span>
+        <span>
+          <Icon name="layers" size={18} />
+          Batch-friendly workflow
+        </span>
+        <span>
+          <Icon name="image" size={18} />
+          Full-resolution exports
+        </span>
+        <span>
+          <Icon name="sliders" size={18} />
+          Your colors. Your canvas.
+        </span>
+      </div>
+      <section id="how-it-works" className="how-section section">
+        <div className="how-heading">
+          <span className="eyebrow">From photo to possibility</span>
+          <h2>
+            Three steps.
+            <br />A clean slate.
+          </h2>
+          <p>
+            No tracing around the edges.
+            <br />
+            No complicated workspace.
+          </p>
+        </div>
+        <div className="steps">
+          <div>
+            <span className="step-number">01</span>
+            <h3>Bring your image</h3>
+            <p>
+              Drag, upload, or paste a photo. Start with one image or add a
+              whole set.
+            </p>
+            <Icon name="upload" size={23} />
           </div>
-        )}
-
-        {/* Items */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
-          {items.map((item) => (
-            <div key={item.id} style={{ background: "rgba(255,255,255,.03)", borderRadius: 14, padding: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: item.status === "done" ? 12 : 0 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", background: "rgba(255,255,255,.06)", flexShrink: 0 }}>
-                    {item.originalUrl && <img src={item.originalUrl} style={{ width: "100%", height: "100%", objectFit: "cover" }} />}
-                  </div>
-                  <div>
-                    <p style={{ color: "rgba(255,255,255,.8)", fontSize: 13, fontWeight: 500, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.file.name}</p>
-                    <p style={{ color: "rgba(255,255,255,.25)", fontSize: 11, margin: 0, fontFamily: "JetBrains Mono" }}>{fB(item.file.size)}{item.serverMs && " \u00b7 " + Number(item.serverMs).toFixed(0) + "ms"}</p>
-                  </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{
-                    fontSize: 10, fontWeight: 500, padding: "2px 8px", borderRadius: 99, textTransform: "uppercase", letterSpacing: .5,
-                    background: item.status === "done" ? "rgba(16,185,129,.12)" : item.status === "processing" ? "rgba(234,179,8,.12)" : item.status === "error" ? "rgba(239,68,68,.12)" : "rgba(255,255,255,.05)",
-                    color: item.status === "done" ? "#34d399" : item.status === "processing" ? "#facc15" : item.status === "error" ? "#f87171" : "rgba(255,255,255,.3)"
-                  }}>{item.status}</span>
-                  {item.status === "error" && <button onClick={() => retry(item.id)} style={{ color: "rgba(255,255,255,.4)", fontSize: 11, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>Retry</button>}
-                  {item.status === "done" && <button onClick={() => dl(item)} style={{ color: "rgba(255,255,255,.5)", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                  </button>}
-                </div>
-              </div>
-              {item.status === "done" && item.resultUrl && <BA original={item.originalUrl} result={item.resultUrl} />}
-              {item.status === "error" && <p style={{ color: "rgba(239,68,68,.6)", fontSize: 12, margin: "8px 0 0" }}>{item.error}</p>}
+          <div>
+            <span className="step-number">02</span>
+            <h3>Make it yours</h3>
+            <p>
+              Get a clean cutout. Try a new color, choose a canvas, and give it
+              room to breathe.
+            </p>
+            <Icon name="sliders" size={23} />
+          </div>
+          <div>
+            <span className="step-number">03</span>
+            <h3>Take it anywhere</h3>
+            <p>
+              Download a PNG, WebP, or JPG. Your next listing, slide, or post is
+              waiting.
+            </p>
+            <Icon name="download" size={23} />
+          </div>
+        </div>
+      </section>
+      <section className="possibilities section" id="features">
+        <div className="section-header">
+          <div>
+            <span className="eyebrow">One cutout. A lot of possibilities.</span>
+            <h2>
+              A small tool for
+              <br />
+              your next big thing.
+            </h2>
+          </div>
+          <p>
+            For the shop you’re building.
+            <br />
+            The idea you’re sharing.
+            <br />
+            The details you want to get right.
+          </p>
+        </div>
+        <div className="usecase-grid">
+          <a
+            href="/blog/white-background-product-photos"
+            className="usecase product-usecase"
+          >
+            <div className="usecase-visual">
+              <img
+                src="/images/sneaker-display.webp"
+                alt="Red sneaker photographed for a product listing"
+                loading="lazy"
+              />
+              <span className="visual-note">Ready for the storefront.</span>
             </div>
+            <div>
+              <span>For sellers</span>
+              <h3>Let the product do the talking.</h3>
+              <p>
+                Clean backgrounds and consistent canvases for a catalog that
+                feels considered.
+              </p>
+              <span className="read-link">
+                Explore product photography <Icon name="arrow" size={17} />
+              </span>
+            </div>
+          </a>
+          <a
+            href="/blog/profile-picture-background"
+            className="usecase creator-usecase"
+          >
+            <div className="usecase-visual">
+              <img
+                src="/images/portrait-display.webp"
+                alt="Portrait for a profile picture"
+                loading="lazy"
+              />
+              <span className="visual-note">A little more you.</span>
+            </div>
+            <div>
+              <span>For creators</span>
+              <h3>Find your place in the frame.</h3>
+              <p>
+                Simple portraits, better profile pictures, and a fresh canvas
+                for your next idea.
+              </p>
+              <span className="read-link">
+                Make a profile picture <Icon name="arrow" size={17} />
+              </span>
+            </div>
+          </a>
+        </div>
+      </section>
+      <JournalPreview />
+      <section className="faq-section section" id="faq">
+        <div>
+          <span className="eyebrow">A few useful answers</span>
+          <h2>Good to know.</h2>
+          <p>
+            Still curious? <a href="/about">Meet the tool.</a>
+          </p>
+        </div>
+        <div className="faq-list">
+          {faqs.map(([question, answer]) => (
+            <details key={question}>
+              <summary>
+                {question}
+                <Icon name="plus" size={18} />
+              </summary>
+              <p>{answer}</p>
+            </details>
           ))}
         </div>
-
-        {items.length === 0 && <p style={{ textAlign: "center", color: "rgba(255,255,255,.08)", fontSize: 12, marginTop: 40, fontFamily: "JetBrains Mono" }}>BiRefNet + Edge Refinement running locally</p>}
+      </section>
+      <section className="closing-cta">
+        <span className="eyebrow">Make some room for your ideas</span>
+        <h2>
+          Keep the good.
+          <br />
+          <em>Lose the background.</em>
+        </h2>
+        <a href="#studio" className="button">
+          Remove a background for free <Icon name="arrow" size={18} />
+        </a>
+        <span>No sign-up. Just your image.</span>
+      </section>
+    </>
+  );
+}
+function Policy({ policy }) {
+  return (
+    <div className="policy-page">
+      <nav className="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>{policy.title}</span>
+      </nav>
+      <header className="policy-header">
+        <span className="eyebrow">The details, in plain language</span>
+        <h1>{policy.title}</h1>
+        <p>{policy.intro}</p>
+        <span className="updated">Last updated October 9, 2026</span>
+      </header>
+      <div className="policy-layout">
+        <aside>
+          <a href="/terms">Terms of use</a>
+          <a href="/privacy">Privacy notice</a>
+          <a href="/cookies">Cookies & storage</a>
+        </aside>
+        <article className="prose">
+          {policy.sections.map((section) => (
+            <section key={section.heading}>
+              <h2>{section.heading}</h2>
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              {section.links?.map((link) => (
+                <p key={link.url}>
+                  <a href={link.url}>{link.title} ↗</a>
+                </p>
+              ))}
+            </section>
+          ))}
+        </article>
       </div>
     </div>
+  );
+}
+function About() {
+  return (
+    <div className="about-page">
+      <section className="page-intro">
+        <span className="eyebrow">About rmvbackground</span>
+        <h1>
+          Make room
+          <br />
+          <span>for the good stuff.</span>
+        </h1>
+        <p>
+          rmvbackground is a free tool for removing image backgrounds and
+          preparing the result for whatever comes next.
+        </p>
+      </section>
+      <div className="about-grid">
+        <div className="about-image checker">
+          <img
+            src="/images/plant-cutout-display.webp"
+            alt="Succulent plant with its background removed"
+          />
+        </div>
+        <div className="prose">
+          <h2>A simpler image workflow</h2>
+          <p>
+            The studio brings background removal, color changes, canvas presets,
+            and common export formats into one place. Use it for individual
+            photos or work through a batch, with separate settings for each
+            image.
+          </p>
+          <p>
+            The frontend and processing code are available in the project
+            repository. The public site uses a hosted processor; the repository
+            also explains how to run your own backend.
+          </p>
+          <h2>About the journal</h2>
+          <p>
+            Our ten guides explain the workflows supported by the tool. Articles
+            are published under the rmvbackground byline, include official
+            references where relevant, and describe limitations alongside
+            practical steps. They do not imply endorsement by the platforms
+            mentioned.
+          </p>
+          <h2>Built in the open</h2>
+          <p>
+            Have an idea or found a rough edge? Share feedback through the
+            repository. Check the terms for model licensing and the privacy
+            notice for how uploaded images are handled.
+          </p>
+          <a
+            className="button secondary"
+            href="https://github.com/penguinpecker/bgzero"
+          >
+            Explore the source <Icon name="code" size={18} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+function NotFound() {
+  return (
+    <section className="not-found">
+      <span className="eyebrow">404 · Something’s missing</span>
+      <h1>
+        This page lost
+        <br />
+        more than its background.
+      </h1>
+      <p>Let’s get you back to something useful.</p>
+      <div>
+        <a href="/" className="button">
+          Open free studio <Icon name="arrow" size={17} />
+        </a>
+        <a href="/blog" className="button secondary">
+          Browse the guides
+        </a>
+      </div>
+    </section>
+  );
+}
+export default function App({ path = "/" }) {
+  const normalized = path.replace(/\/+$/, "") || "/";
+  const article = normalized.startsWith("/blog/")
+    ? articleBySlug(normalized.slice(6))
+    : null;
+  const policy = policies[normalized.slice(1)];
+  return (
+    <>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <div id="top" />
+      <Header path={normalized} />
+      <main id="main-content" className="container">
+        {normalized === "/" ? (
+          <Home />
+        ) : normalized === "/blog" ? (
+          <div id="journal-root">
+            <Journal />
+          </div>
+        ) : article ? (
+          <ArticlePage article={article} />
+        ) : policy ? (
+          <Policy policy={policy} />
+        ) : normalized === "/about" ? (
+          <About />
+        ) : (
+          <NotFound />
+        )}
+      </main>
+      <div className="container">
+        <Footer />
+      </div>
+    </>
   );
 }

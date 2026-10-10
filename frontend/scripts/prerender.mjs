@@ -1,0 +1,225 @@
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import path from "node:path";
+import { createServer } from "vite";
+import React from "react";
+import { renderToString } from "react-dom/server";
+import { pageMetadata } from "../src/content/seo.js";
+
+const origin = (
+  process.env.SITE_URL || "https://rmvbackground.vercel.app"
+).replace(/\/$/, "");
+if (new URL(origin).protocol !== "https:")
+  throw new Error("SITE_URL must use https");
+const server = await createServer({
+  server: { middlewareMode: true },
+  appType: "custom",
+});
+const escape = (value) =>
+  String(value).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        char
+      ],
+  );
+try {
+  const { default: App } = await server.ssrLoadModule("/src/App.jsx");
+  const { articles } = await server.ssrLoadModule("/src/content/articles.js");
+  const { policies } = await server.ssrLoadModule("/src/content/policies.js");
+  const template = (await readFile("dist/index.html", "utf8")).replace(
+    /<title>.*?<\/title>/,
+    "",
+  );
+  const manifest = JSON.parse(
+    await readFile("dist/.vite/manifest.json", "utf8"),
+  );
+  const routes = [
+    "/",
+    "/blog",
+    "/about",
+    ...Object.keys(policies).map((slug) => `/${slug}`),
+    ...articles.map((article) => `/blog/${article.slug}`),
+    "/404",
+  ];
+  const pages = routes.map((route) => {
+    if (!pageMetadata[route])
+      throw new Error(`Missing search metadata for ${route}`);
+    return {
+      route,
+      ...pageMetadata[route],
+      article: articles.find((article) => route === `/blog/${article.slug}`),
+      noindex: route === "/404",
+    };
+  });
+  const socialImages = {
+    plant: {
+      file: "plant.jpg",
+      width: 1000,
+      height: 666,
+      alt: "A succulent in a pale turquoise pot used in the background removal demo.",
+    },
+    sneaker: {
+      file: "sneaker.jpg",
+      width: 900,
+      height: 600,
+      alt: "A red sneaker used in the product photo background removal guides.",
+    },
+    portrait: {
+      file: "portrait.jpg",
+      width: 900,
+      height: 1350,
+      alt: "A portrait used in the profile picture and hair cutout guides.",
+    },
+  };
+  for (const page of pages) {
+    const url = origin + (page.route === "/" ? "/" : page.route);
+    const socialImage = socialImages[page.article?.image] || socialImages.plant;
+    const imageUrl = `${origin}/images/${socialImage.file}`;
+    const organization = {
+      "@type": "Organization",
+      name: "rmvbackground",
+      url: `${origin}/`,
+      logo: `${origin}/favicon.svg`,
+    };
+    const graph = page.article
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: page.article.title,
+            description: page.description,
+            mainEntityOfPage: url,
+            image: imageUrl,
+            datePublished: `${page.article.date}T00:00:00+05:30`,
+            dateModified: `${page.article.date}T00:00:00+05:30`,
+            author: { ...organization, url: `${origin}/about` },
+            publisher: organization,
+            articleSection: page.article.category,
+            inLanguage: "en",
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: `${origin}/`,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Journal",
+                item: `${origin}/blog`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: page.article.title,
+                item: url,
+              },
+            ],
+          },
+        ]
+      : page.route === "/"
+        ? [
+            {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "rmvbackground",
+              url,
+              applicationCategory: "MultimediaApplication",
+              operatingSystem: "Web browser",
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+              description: page.description,
+              featureList: [
+                "Background removal",
+                "Transparent PNG export",
+                "Background colors",
+                "Canvas presets",
+                "Batch ZIP download",
+              ],
+              publisher: organization,
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "rmvbackground",
+              url,
+              publisher: organization,
+            },
+          ]
+        : [];
+    const interactiveEntry =
+      page.route === "/"
+        ? "src/components/Studio.jsx"
+        : page.route === "/blog"
+          ? "src/components/Journal.jsx"
+          : null;
+    const interactivePreload = interactiveEntry
+      ? `<link rel="modulepreload" crossorigin href="/${escape(manifest[interactiveEntry].file)}" />`
+      : "";
+    const metadata = `${interactivePreload}<title>${escape(page.title)}</title>
+    <meta name="description" content="${escape(page.description)}" />
+    <meta name="application-name" content="rmvbackground" />
+    <meta name="author" content="rmvbackground" />
+    <meta name="robots" content="${page.noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}" />
+    <link rel="canonical" href="${escape(url)}" />
+    <meta property="og:type" content="${page.article ? "article" : "website"}" />
+    <meta property="og:site_name" content="rmvbackground" />
+    <meta property="og:title" content="${escape(page.title)}" />
+    <meta property="og:description" content="${escape(page.description)}" />
+    <meta property="og:url" content="${escape(url)}" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="${escape(imageUrl)}" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="${socialImage.width}" />
+    <meta property="og:image:height" content="${socialImage.height}" />
+    <meta property="og:image:alt" content="${escape(socialImage.alt)}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${escape(imageUrl)}" />
+    <meta name="twitter:image:alt" content="${escape(socialImage.alt)}" />
+    <meta name="twitter:title" content="${escape(page.title)}" />
+    <meta name="twitter:description" content="${escape(page.description)}" />
+    ${page.article ? `<meta property="article:published_time" content="${page.article.date}T00:00:00+05:30" />` : ""}
+    ${graph.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`).join("\n")}`;
+    let html = template
+      .replace("<!--page-meta-->", metadata)
+      .replace(
+        "<!--app-html-->",
+        renderToString(React.createElement(App, { path: page.route })),
+      );
+    // Articles and policies are complete HTML and need no React runtime.
+    if (!["/", "/blog"].includes(page.route)) {
+      html = html
+        .replace(/<script type="module"[^>]*><\/script>/g, "")
+        .replace(/<link rel="modulepreload"[^>]*>/g, "");
+    }
+    const file = path.join(
+      "dist",
+      page.route === "/" ? "index.html" : `${page.route.slice(1)}.html`,
+    );
+    await mkdir(path.dirname(file), { recursive: true });
+    await writeFile(file, html);
+  }
+  await writeFile(
+    "dist/sitemap.xml",
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages
+      .filter((page) => !page.noindex)
+      .map(
+        (page) =>
+          `  <url><loc>${escape(origin + (page.route === "/" ? "/" : page.route))}</loc>${page.article ? `<lastmod>${page.article.date}</lastmod>` : ""}</url>`,
+      )
+      .join("\n")}\n</urlset>\n`,
+  );
+  await writeFile(
+    "dist/robots.txt",
+    `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`,
+  );
+  console.log(
+    `Prerendered ${pages.length} complete HTML pages, sitemap.xml, and robots.txt.`,
+  );
+} finally {
+  await server.close();
+}

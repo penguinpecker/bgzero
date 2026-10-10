@@ -1,7 +1,80 @@
-# BGZERO — Self-Hosted Background Removal Engine
+# rmvbackground — Free background remover
 
-Production-grade background removal running entirely on your hardware.
-No per-image fees. No cloud dependency. No bullshit.
+[Open the studio](https://rmvbackground.vercel.app/) · [Read the guides](https://rmvbackground.vercel.app/blog) · [Privacy](https://rmvbackground.vercel.app/privacy)
+
+A React/Vite background removal workspace with a FastAPI processing backend.
+The public deployment uses the existing hosted Modal processor.
+
+## Web studio
+
+- Drag-and-drop, clipboard paste, samples, sequential batches, retry, cancel, and clear.
+- Accessible before/after comparison and original/result views.
+- Per-image transparent or custom-color backgrounds, canvas presets, image scale, and soft shadows.
+- PNG, WebP, and JPG exports and downloadable ZIPs.
+- Ten practical guides, searchable journal, about, terms, privacy, cookies, and branded 404.
+- Prerendered HTML, unique metadata, structured data, sitemap, and robots.txt.
+- Larger responsive workspace, optimized display images, canvas previews, and ZIP creation in a worker.
+- Original PNG downloads reuse the server output; article and legal pages need no application JavaScript.
+
+### Run and verify
+
+```bash
+cd frontend
+npm ci
+cp .env.example .env.local
+# Set VITE_API_URL to your backend origin.
+npm run dev
+```
+
+```bash
+npm test
+npm run build
+npm run check:pages
+```
+
+The build generates 17 HTML pages in `frontend/dist`. Deploy `frontend` with
+its `vercel.json` and clean HTML URLs. Production needs `VITE_API_URL`.
+`SITE_URL` controls canonical URLs; it defaults to the working public site above.
+The intended custom domain is `rmvbackground.com`. Set `SITE_URL` to its HTTPS
+origin and redeploy once the domain is connected; see [the launch steps](docs/SEO.md#rmvbackgroundcom-launch).
+
+With the dev server at port 4198, run:
+
+```bash
+opera-browser-cli run < scripts/verify-browser.js
+```
+
+For a full multiselect batch check against the production build, start
+`npm run preview -- --host 127.0.0.1 --port 4199` and run:
+
+```bash
+opera-browser-cli run < scripts/verify-batch.js
+```
+
+This check uploads four images together, unpacks the ZIP, decodes each PNG, checks
+transparency and dimensions, and compares its SHA-256 hash to the server response.
+It also verifies that preview edits do not encode temporary image blobs.
+
+The browser verification uses public sample photos, exercises real processing,
+and temporarily intercepts downloads in the test tab to inspect exported files.
+
+### Content and operating notes
+
+See the [developer handoff](docs/HANDOFF.md) for deployment details, verification
+results, and the remaining custom-domain launch work.
+
+Guides live in `frontend/src/content/articles.js`; policies live in
+`frontend/src/content/policies.js`. See [the SEO plan](docs/SEO.md) for the topic
+map and proposed earned-link work. No external backlinks or rankings are claimed.
+
+The hosted backend currently shares one refinement path for Quality, Ultra, and
+Matting. The self-hosted engine has different paths. Public images go to the
+configured backend; browser edits do not persist an image library. There are no
+application analytics tags or cookies. Policies use the existing project contact;
+the operator should add its business identity and private contact when available.
+Underlying model licenses are separate from access to the interface.
+
+## Self-hosted backend
 
 ## Architecture
 
@@ -64,12 +137,12 @@ npm install && npm run dev
 
 ## Models
 
-| Model | Size | Speed (M4 Max) | Quality | License |
-|-------|------|-----------------|---------|---------|
-| RMBG 2.0 | ~750MB | ~4s | ★★★★★ | Non-commercial free, commercial via BRIA |
-| BiRefNet | ~450MB | ~3s | ★★★★☆ | Apache 2.0 |
-| BEN2 | ~300MB | ~2s | ★★★★☆ | MIT |
-| Ensemble | ~1.5GB | ~8s | ★★★★★+ | Mixed |
+| Model    | Size   | Speed (M4 Max) | Quality | License                                  |
+| -------- | ------ | -------------- | ------- | ---------------------------------------- |
+| RMBG 2.0 | ~750MB | ~4s            | ★★★★★   | Non-commercial free, commercial via BRIA |
+| BiRefNet | ~450MB | ~3s            | ★★★★☆   | Apache 2.0                               |
+| BEN2     | ~300MB | ~2s            | ★★★★☆   | MIT                                      |
+| Ensemble | ~1.5GB | ~8s            | ★★★★★+  | Mixed                                    |
 
 ## Processing Modes
 
