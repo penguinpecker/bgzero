@@ -60,6 +60,9 @@ and temporarily intercepts downloads in the test tab to inspect exported files.
 
 ### Content and operating notes
 
+See the [developer handoff](docs/HANDOFF.md) for deployment details, verification
+results, and the remaining custom-domain launch work.
+
 Guides live in `frontend/src/content/articles.js`; policies live in
 `frontend/src/content/policies.js`. See [the SEO plan](docs/SEO.md) for the topic
 map and proposed earned-link work. No external backlinks or rankings are claimed.
